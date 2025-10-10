@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using ToDo.Application.CQRS.Commands;
+﻿using AutoMapper;
+using ToDo.Application.CQRS.Commands.UserCommands;
 using ToDo.Application.DTOs;
 using ToDo.Domain.Entities;
 

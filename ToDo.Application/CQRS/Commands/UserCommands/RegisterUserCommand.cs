@@ -6,7 +6,7 @@ using ToDo.Application.Helpers;
 using ToDo.Application.Interfaces;
 using ToDo.Domain.Entities;
 
-namespace ToDo.Application.CQRS.Commands
+namespace ToDo.Application.CQRS.Commands.UserCommands
 {
     public class RegisterUserCommand : IRequest<Result<UserDto>>
     {

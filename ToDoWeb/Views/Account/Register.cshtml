@@ -1,4 +1,5 @@
-﻿@model ToDo.Application.CQRS.Commands.RegisterUserCommand
+﻿@using ToDo.Application.CQRS.Commands.UserCommands
+@model RegisterUserCommand
 @{
     Layout = null;
 }
@@ -9,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - ToDoApp</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="~/css/register.css">
 </head>
 <body>
@@ -37,21 +39,8 @@
                 <h2>Create Account</h2>
                 <p class="subtitle">Join ToDoApp and boost your productivity</p>
             </div>
+            @await Html.PartialAsync("_Notification")
 
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <span>@TempData["ErrorMessage"]</span>
-                </div>
-            }
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="alert alert-success">
-                    <i class="fas fa-check-circle"></i>
-                    <span>@TempData["SuccessMessage"]</span>
-                </div>
-            }
 
             <form asp-action="Register" asp-controller="Account" method="post">
                 <div class="input-box">

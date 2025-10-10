@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using ToDo.Application.Helpers;
 using ToDo.Application.Interfaces;
 
-namespace ToDo.Application.CQRS.Queries
+namespace ToDo.Application.CQRS.Queries.UserQueries
 {
     public class LoginUserQuery : IRequest<Result<bool>>
     {

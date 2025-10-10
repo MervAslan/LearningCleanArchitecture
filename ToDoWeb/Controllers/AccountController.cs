@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using ToDo.Application.CQRS.Commands;
-using ToDo.Application.CQRS.Queries;
+using ToDo.Application.CQRS.Commands.UserCommands;
+using ToDo.Application.CQRS.Queries.UserQueries;
 
 
 

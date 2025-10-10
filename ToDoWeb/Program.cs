@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ToDo.Application.CQRS.Commands;
-using ToDo.Application. Interfaces;
+using ToDo.Application.CQRS.Commands.UserCommands;
+using ToDo.Application.Interfaces;
 using ToDo.Application.Mappings;
 using ToDo.Infrastucture.Contexts;
 using ToDo.Infrastucture.Repositories;
