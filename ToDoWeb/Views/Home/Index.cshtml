@@ -1,0 +1,248 @@
+﻿@{
+    ViewData["Title"] = "Welcome to ToDoApp";
+    Layout = null;
+}
+<!-- Bootstrap, AOS ve Icon stilleri -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="~/css/index.css" />
+
+
+
+<div class="animated-bg"></div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#hero">
+            <i class="fas fa-check-circle"></i> ToDoApp
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="hero" class="hero">
+    <div class="floating-icons">
+        <i class="fas fa-check-circle floating-icon"></i>
+        <i class="fas fa-tasks floating-icon"></i>
+        <i class="fas fa-bell floating-icon"></i>
+        <i class="fas fa-calendar-check floating-icon"></i>
+    </div>
+
+    <div class="hero-content">
+        <h1 data-aos="fade-down" data-aos-duration="1000">
+            Organize Your Day with ToDoApp
+        </h1>
+        <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+            Track your tasks, manage your goals, and stay productive with our intuitive task management platform.
+        </p>
+        <div data-aos="zoom-in" data-aos-delay="400" data-aos-duration="1000">
+            <a href="/Account/Register" class="btn btn-custom btn-primary-custom mx-2">
+                Get Started Free
+            </a>
+            <a href="/Account/Login" class="btn btn-custom btn-outline-custom mx-2">
+                Sign In
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<div class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="stat-item">
+                    <div class="stat-number">10K+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-item">
+                    <div class="stat-number">500K+</div>
+                    <div class="stat-label">Tasks Completed</div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="stat-item">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+<section id="about">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">About ToDoApp</h2>
+            <p class="section-subtitle">
+                Your ultimate productivity companion designed for modern professionals
+            </p>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4" data-aos="fade-right">
+                <h3 class="mb-4" style="color: white; font-weight: 600;">Why Choose ToDoApp?</h3>
+                <p class="mb-3" style="color: #b0b0c0; font-size: 1.1rem; line-height: 1.8;">
+                    ToDoApp helps you organize your daily tasks with a simple, clean interface that adapts to your workflow.
+                    Set deadlines, prioritize work, and never miss a task again!
+                </p>
+                <p style="color: #b0b0c0; font-size: 1.1rem; line-height: 1.8;">
+                    Built with modern technology and designed for efficiency, our platform empowers you to achieve more every day.
+                </p>
+            </div>
+            <div class="col-lg-6 mb-4" data-aos="fade-left">
+                <div class="glass-card">
+                    <i class="fas fa-rocket feature-icon"></i>
+                    <h4>Boost Your Productivity</h4>
+                    <p>Experience a streamlined workflow that helps you focus on what matters most. Our intelligent task management system adapts to your needs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Powerful Features</h2>
+            <p class="section-subtitle">Everything you need to stay organized and productive</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="glass-card">
+                    <i class="fas fa-tasks feature-icon"></i>
+                    <h4>Easy Task Management</h4>
+                    <p>Create, edit, and complete tasks in seconds with our intuitive interface. Drag and drop to prioritize.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card">
+                    <i class="fas fa-bell feature-icon"></i>
+                    <h4>Smart Reminders</h4>
+                    <p>Never miss a deadline with intelligent notifications that keep you on top of your schedule.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="glass-card">
+                    <i class="fas fa-chart-line feature-icon"></i>
+                    <h4>Analytics Dashboard</h4>
+                    <p>Track your productivity with detailed insights and visualizations of completed goals.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="glass-card">
+                    <i class="fas fa-users feature-icon"></i>
+                    <h4>Team Collaboration</h4>
+                    <p>Share tasks and projects with your team for seamless collaboration and coordination.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card">
+                    <i class="fas fa-mobile-alt feature-icon"></i>
+                    <h4>Cross-Platform Sync</h4>
+                    <p>Access your tasks anywhere, anytime with automatic synchronization across all devices.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="glass-card">
+                    <i class="fas fa-shield-alt feature-icon"></i>
+                    <h4>Secure & Private</h4>
+                    <p>Your data is encrypted and protected with enterprise-grade security measures.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle mb-4">Have questions? We're here to help!</p>
+            <div class="glass-card d-inline-block" style="max-width: 600px;">
+                <i class="fas fa-envelope feature-icon"></i>
+                <h4>Contact Us</h4>
+                <p>
+                    Email us at
+                    <a href="mailto:support@todoapp.com" style="color: #667eea; text-decoration: none; font-weight: 600;">
+                        support@todoapp.com
+                    </a>
+                </p>
+                <p style="margin-bottom: 0;">We typically respond within 24 hours</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <p style="margin: 0; color: #b0b0c0;">
+                    &copy; 2025 ToDoApp. All rights reserved.
+                </p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // AOS Initialization
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar-custom');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+</script>

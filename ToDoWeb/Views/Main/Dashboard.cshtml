@@ -1,0 +1,210 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ToDoApp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/dashboard.css">
+    <style>
+        /* (Tüm CSS kısmı aynı kalabilir, sadece HTML düzenlendiği için değiştirmene gerek yok) */
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <i class="fas fa-check-circle brand-icon"></i>
+                <span class="brand-name">ToDoApp</span>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title">Navigation</h3>
+                <ul class="category-list">
+                    <li class="category-item">
+                        <a href="#" class="category-link active">
+                            <div class="category-info">
+                                <i class="fas fa-home"></i>
+                                <span>Dashboard</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="category-item">
+                        <a href="#" class="category-link">
+                            <div class="category-info">
+                                <i class="fas fa-briefcase"></i>
+                                <span>Work Board</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title">Categories</h3>
+                <ul class="category-list">
+                    <li class="category-item">
+                        <a href="#" class="category-link active">
+                            <div class="category-info">
+                                <span class="category-icon" style="background: #667eea;"></span>
+                                <span>Work</span>
+                            </div>
+                            <span class="category-count">12</span>
+                        </a>
+                    </li>
+                    <li class="category-item">
+                        <a href="#" class="category-link">
+                            <div class="category-info">
+                                <span class="category-icon" style="background: #f5576c;"></span>
+                                <span>Personal</span>
+                            </div>
+                            <span class="category-count">8</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title">Quick Actions</h3>
+                <button class="add-category-btn" style="margin-top: 0;">
+                    <i class="fas fa-arrow-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar">JD</div>
+                <div class="user-info">
+                    <h4>John Doe</h4>
+                    <p>john@example.com</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>Work Board</h1>
+                    <div class="breadcrumb">
+                        <i class="fas fa-home"></i>
+                        <span>/</span>
+                        <span>Dashboard</span>
+                        <span>/</span>
+                        <span>Work</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-secondary"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> New Board</button>
+                </div>
+            </header>
+
+            <!-- Kanban Board -->
+            <div class="kanban-board">
+                <!-- To Do Column -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <h3>To Do</h3>
+                            <span class="column-badge">5</span>
+                        </div>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-card">
+                            <div class="task-header">
+                                <span class="task-priority priority-high"></span>
+                                <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                            </div>
+                            <h4 class="task-title">Design new landing page</h4>
+                            <p class="task-description">Create a modern landing page design with dark theme</p>
+                            <div class="task-footer">
+                                <div class="task-tags"><span class="task-tag">Design</span></div>
+                                <div class="task-meta">
+                                    <span><i class="far fa-calendar"></i> Dec 25</span>
+                                    <div class="task-assignee">JD</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                </div>
+
+                <!-- In Progress Column -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <h3>In Progress</h3>
+                            <span class="column-badge">3</span>
+                        </div>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-card">
+                            <div class="task-header">
+                                <span class="task-priority priority-high"></span>
+                                <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                            </div>
+                            <h4 class="task-title">Implement authentication</h4>
+                            <p class="task-description">Add JWT authentication to the API</p>
+                            <div class="task-footer">
+                                <div class="task-tags"><span class="task-tag">Backend</span></div>
+                                <div class="task-meta">
+                                    <span><i class="far fa-calendar"></i> Dec 22</span>
+                                    <div class="task-assignee">AB</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                </div>
+
+                <!-- Completed Column -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <h3>Completed</h3>
+                            <span class="column-badge">6</span>
+                        </div>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-card">
+                            <div class="task-header">
+                                <span class="task-priority priority-low"></span>
+                                <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                            </div>
+                            <h4 class="task-title">Fix UI bugs</h4>
+                            <p class="task-description">Resolved alignment issues and improved responsiveness.</p>
+                            <div class="task-footer">
+                                <div class="task-tags"><span class="task-tag">Frontend</span></div>
+                                <div class="task-meta">
+                                    <span><i class="far fa-calendar"></i> Dec 15</span>
+                                    <div class="task-assignee">JD</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
