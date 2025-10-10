@@ -31,15 +31,11 @@ namespace ToDo.Application.CQRS.Commands
         public async Task<Result<UserDto>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var existingUser = await _userRepository.GetByUsernameAsync(request.Username);
-            if (existingUser != null)
-            {
-                return Result<UserDto>.Failure("Kullanıcı adı zaten kayıtlı.");
-            }
+            if (existingUser != null) return Result<UserDto>.Failure("Kullanıcı adı zaten kayıtlı.");
+            
             existingUser = await _userRepository.GetByEmailAsync(request.Email);
-            if (existingUser != null)
-            {
-                return Result<UserDto>.Failure("Email zaten kayıtlı.");
-            }
+            if (existingUser != null) return Result<UserDto>.Failure("Email zaten kayıtlı.");
+            
             var user = _mapper.Map<User>(request);
             user.PasswordHash = HashPassword(request.Password);
             await _userRepository.AddAync(user);
@@ -49,7 +45,7 @@ namespace ToDo.Application.CQRS.Commands
         }
         private string HashPassword(string password)
         {
-            // basit hash yaptık
+            // basit hash yaptım
             using (var sha256 = System.Security.Cryptography.SHA256.Create())
             {
                 var bytes = System.Text.Encoding.UTF8.GetBytes(password);

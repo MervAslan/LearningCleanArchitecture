@@ -15,6 +15,10 @@ namespace ToDo.Infrastucture.Contexts
         {
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<Board> Board { get; set; }
+        public DbSet<TaskItem> TaskItem { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

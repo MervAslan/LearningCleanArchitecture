@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using ToDo.Application.CQRS.Commands;
+using ToDo.Application.CQRS.Queries;
+
 
 
 namespace ToDoWeb.Controllers
@@ -47,20 +49,20 @@ namespace ToDoWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginUserCommand command)
+        public async Task<IActionResult> Login(LoginUserQuery query)
         {
             if (!ModelState.IsValid)
             {
-                return View(command);
+                return View(query);
             }
 
            
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(query);
 
             if (!result.IsSuccess)
             {
                 TempData["ErrorMessage"] = result.Message;
-                return View(command); 
+                return View(query); 
             }
 
             TempData["SuccessMessage"] = result.Message;
