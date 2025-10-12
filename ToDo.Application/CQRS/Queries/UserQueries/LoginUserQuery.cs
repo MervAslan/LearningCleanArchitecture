@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
+using ToDo.Application.DTOs;
 using ToDo.Application.Helpers;
 using ToDo.Application.Interfaces;
+using AutoMapper;
 
 namespace ToDo.Application.CQRS.Queries.UserQueries
 {
-    public class LoginUserQuery : IRequest<Result<bool>>
+    public class LoginUserQuery : IRequest<Result<UserDto>>
     {
         [Required]
         [EmailAddress]
@@ -14,24 +16,26 @@ namespace ToDo.Application.CQRS.Queries.UserQueries
         public string Password { get; set; }
     }
 
-    public class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Result<bool>>
+    public class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Result<UserDto>>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
         public LoginUserQueryHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public async Task<Result<bool>> Handle(LoginUserQuery request, CancellationToken cancellationToken)
+        public async Task<Result<UserDto>> Handle(LoginUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByEmailAsync(request.Email);
-            if (user is null) return Result<bool>.Failure("Kullanıcı bulunamadı.");
+            var user = await _userRepository.GetUserWithDetailsAsync(request.Email);
+            if (user is null) return Result<UserDto>.Failure("Kullanıcı bulunamadı.");
 
             var hashedPassword = HashPassword(request.Password);
-            if (user.PasswordHash != hashedPassword) return Result<bool>.Failure("Şifre hatalı.");
+            if (user.PasswordHash != hashedPassword) return Result<UserDto>.Failure("Şifre hatalı.");
 
-            return Result<bool>.Success(true, "Giriş başarılı!");
+            var userDto = _mapper.Map<UserDto>(user);
+            return Result<UserDto>.Success(userDto, "Giriş başarılı!");
         }
 
         private string HashPassword(string password)

@@ -64,6 +64,9 @@ namespace ToDoWeb.Controllers
                 TempData["ErrorMessage"] = result.Message;
                 return View(query); 
             }
+            var user = result.Data;
+            HttpContext.Session.SetString("UserEmail", user.Email);
+            HttpContext.Session.SetInt32("UserId", user.Id);
 
             TempData["SuccessMessage"] = result.Message;
             return RedirectToAction("Dashboard", "Main");

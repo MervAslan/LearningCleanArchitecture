@@ -38,8 +38,10 @@ namespace ToDo.Application.CQRS.Commands.UserCommands
             
             var user = _mapper.Map<User>(request);
             user.PasswordHash = HashPassword(request.Password);
+
             await _userRepository.AddAync(user);
             await _userRepository.SaveChangesAsync();
+
             var userDto = _mapper.Map<UserDto>(user);
             return Result<UserDto>.Success(userDto, "Kayıt başarılı!");
         }

@@ -13,6 +13,10 @@ namespace ToDo.Application.Mappings
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
 
             CreateMap<User, UserDto>(); // dbden gelen  user entitysini frontende döndürmek için userdtoya dönüştürüyoruz
+            CreateMap<Category, CategoryDto>();
+            CreateMap<Board, BoardDto>();
+            CreateMap<TaskItem, TaskItemDto>();
+
         }
     }
 }

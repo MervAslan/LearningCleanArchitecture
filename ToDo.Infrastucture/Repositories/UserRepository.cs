@@ -36,6 +36,14 @@ namespace ToDo.Infrastucture.Repositories
         {
             await _context.SaveChangesAsync();
         }
+        public async Task<User?> GetUserWithDetailsAsync(string email)
+        {
+            return await _context.Users
+                .Include(u => u.Categories) //categories burda navigation property ismi  (users entity sinde tanımlı olan)
+                    .ThenInclude(c => c.Boards)
+                        .ThenInclude(b => b.Tasks)
+                .FirstOrDefaultAsync(u => u.Email == email);
+        }
 
     }
 }
