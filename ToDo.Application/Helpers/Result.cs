@@ -16,7 +16,7 @@ namespace ToDo.Application.Helpers
         {
             var result = new Result<T>();
             result.IsSuccess = true;    
-            result.Data = data;         
+            result.Data = data; // kullanıcı verilerini tutcaz         
             result.Message = message;   
             return result;              
         }

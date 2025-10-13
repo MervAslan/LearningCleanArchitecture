@@ -18,5 +18,5 @@ namespace ToDo.Application.Mappings
             CreateMap<TaskItem, TaskItemDto>();
 
         }
-    }
+    } 
 }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ToDo.Application.DTOs.UserDto
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -10,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="~/css/dashboard.css">
-    
 </head>
 <body>
     <div class="animated-bg"></div>
@@ -37,168 +37,198 @@
                             </div>
                         </a>
                     </li>
-                    <li class="category-item">
-                        <a href="#" class="category-link">
-                            <div class="category-info">
-                                <i class="fas fa-briefcase"></i>
-                                <span>Work Board</span>
-                            </div>
-                        </a>
-                    </li>
                 </ul>
             </div>
 
-            
             <div class="sidebar-section">
                 <h3 class="section-title">Categories</h3>
                 <ul class="category-list">
-                    <li class="category-item">
-                        <a href="#" class="category-link active">
-                            <div class="category-info">
-                                <span class="category-icon" style="background: #667eea;"></span>
-                                <span>Work</span>
-                            </div>
-                            <span class="category-count">12</span>
-                        </a>
-                    </li>
-                    <li class="category-item">
-                        <a href="#" class="category-link">
-                            <div class="category-info">
-                                <span class="category-icon" style="background: #f5576c;"></span>
-                                <span>Personal</span>
-                            </div>
-                            <span class="category-count">8</span>
-                        </a>
-                    </li>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <li class="category-item">
+                            <a href="#" class="category-link">
+                                <div class="category-info">
+                                    <span class="category-icon" style="background: #667eea;"></span>
+                                    <span>@category.Name</span>
+                                </div>
+                                <span class="category-count">@category.Boards.Sum(b => b.Tasks.Count)</span>
+                            </a>
+                        </li>
+                    }
                 </ul>
             </div>
 
             <div class="sidebar-section">
                 <h3 class="section-title">Quick Actions</h3>
-                <button class="add-category-btn" style="margin-top: 0;">
-                    <i class="fas fa-arrow-right-from-bracket"></i>
-                    <span>Logout</span>
-                </button>
+                <form asp-action="Logout" asp-controller="Account" method="post">
+                    <button class="add-category-btn" style="margin-top: 0;">
+                        <i class="fas fa-arrow-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
             </div>
 
             <div class="user-profile">
-                <div class="user-avatar">JD</div>
+                <div class="user-avatar">@Model.Username.Substring(0, 2).ToUpper()</div>
                 <div class="user-info">
-                    <h4>John Doe</h4>
-                    <p>john@example.com</p>
+                    <h4>@Model.Username</h4>
+                    <p>@Model.Email</p>
                 </div>
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="main-content">
-            
-
-            <!-- Header -->
-            <header class="dashboard-header">
-                <div class="header-left">
-                    <h1>Work Board</h1>
-                    <div class="breadcrumb">
-                        <i class="fas fa-home"></i>
-                        <span>/</span>
-                        <span>Dashboard</span>
-                        <span>/</span>
-                        <span>Work</span>
-                    </div>
-                </div>
-                <div class="header-right">
-                    <button class="btn btn-secondary"><i class="fas fa-filter"></i> Filter</button>
-                    <button class="btn btn-primary"><i class="fas fa-plus"></i> New Board</button>
-                </div>
-            </header>
-            @await Html.PartialAsync("_Notification")
-            
-            <!-- Kanban Board -->
-            <div class="kanban-board">
-                <!-- To Do Column -->
-                <div class="kanban-column">
-                    <div class="column-header">
-                        <div class="column-title">
-                            <h3>To Do</h3>
-                            <span class="column-badge">5</span>
-                        </div>
-                    </div>
-                    <div class="task-list">
-                        <div class="task-card">
-                            <div class="task-header">
-                                <span class="task-priority priority-high"></span>
-                                <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+            @foreach (var category in Model.Categories)
+            {
+                @foreach (var board in category.Boards)
+                {
+                    <header class="dashboard-header">
+                        <div class="header-left">
+                            <h1>@board.Title</h1>
+                            <div class="breadcrumb">
+                                <i class="fas fa-home"></i>
+                                <span>/</span>
+                                <span>Dashboard</span>
+                                <span>/</span>
+                                <span>@category.Name</span>
                             </div>
-                            <h4 class="task-title">Design new landing page</h4>
-                            <p class="task-description">Create a modern landing page design with dark theme</p>
-                            <div class="task-footer">
-                                <div class="task-tags"><span class="task-tag">Design</span></div>
-                                <div class="task-meta">
-                                    <span><i class="far fa-calendar"></i> Dec 25</span>
-                                    <div class="task-assignee">JD</div>
+                        </div>
+                        <div class="header-right">
+                            <button class="btn btn-secondary"><i class="fas fa-filter"></i> Filter</button>
+                            <button class="btn btn-primary"><i class="fas fa-plus"></i> New Task</button>
+                        </div>
+                    </header>
+
+                    @await Html.PartialAsync("_Notification")
+
+                    <!-- Kanban Board -->
+                    <div class="kanban-board">
+                        <!-- To Do Column -->
+                        <div class="kanban-column">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <h3>To Do</h3>
+                                    <span class="column-badge">@board.Tasks.Count(t => t.Status.Equals("To Do", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("ToDo", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase))</span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
-                </div>
 
-                <!-- In Progress Column -->
-                <div class="kanban-column">
-                    <div class="column-header">
-                        <div class="column-title">
-                            <h3>In Progress</h3>
-                            <span class="column-badge">3</span>
-                        </div>
-                    </div>
-                    <div class="task-list">
-                        <div class="task-card">
-                            <div class="task-header">
-                                <span class="task-priority priority-high"></span>
-                                <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                            <div class="task-list">
+                                @foreach (var task in board.Tasks.Where(t => t.Status.Equals("To Do", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("ToDo", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase)))
+                                {
+                                    <div class="task-card">
+                                        <div class="task-header">
+                                            <span class="task-priority priority-high"></span>
+                                            <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                                        </div>
+                                        <h4 class="task-title">@task.Title</h4>
+                                        <p class="task-description">@task.Description</p>
+                                        <div class="task-footer">
+                                            <div class="task-tags">
+                                                @if (!string.IsNullOrEmpty(task.Tag))
+                                                {
+                                                    <span class="task-tag">@task.Tag</span>
+                                                }
+                                            </div>
+                                            <div class="task-meta">
+                                                @if (task.DueDate.HasValue)
+                                                {
+                                                    <span><i class="far fa-calendar"></i> @task.DueDate.Value.ToString("MMM dd")</span>
+                                                }
+                                                <div class="task-assignee">@Model.Username.Substring(0, 2).ToUpper()</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
-                            <h4 class="task-title">Implement authentication</h4>
-                            <p class="task-description">Add JWT authentication to the API</p>
-                            <div class="task-footer">
-                                <div class="task-tags"><span class="task-tag">Backend</span></div>
-                                <div class="task-meta">
-                                    <span><i class="far fa-calendar"></i> Dec 22</span>
-                                    <div class="task-assignee">AB</div>
+
+                            <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                        </div>
+
+                        <!-- In Progress Column -->
+                        <div class="kanban-column">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <h3>In Progress</h3>
+                                    <span class="column-badge">@board.Tasks.Count(t => t.Status.Equals("In Progress", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("InProgress", StringComparison.OrdinalIgnoreCase))</span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
-                </div>
 
-                <!-- Completed Column -->
-                <div class="kanban-column">
-                    <div class="column-header">
-                        <div class="column-title">
-                            <h3>Completed</h3>
-                            <span class="column-badge">6</span>
-                        </div>
-                    </div>
-                    <div class="task-list">
-                        <div class="task-card">
-                            <div class="task-header">
-                                <span class="task-priority priority-low"></span>
-                                <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                            <div class="task-list">
+                                @foreach (var task in board.Tasks.Where(t => t.Status.Equals("In Progress", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("InProgress", StringComparison.OrdinalIgnoreCase)))
+                                {
+                                    <div class="task-card">
+                                        <div class="task-header">
+                                            <span class="task-priority priority-high"></span>
+                                            <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                                        </div>
+                                        <h4 class="task-title">@task.Title</h4>
+                                        <p class="task-description">@task.Description</p>
+                                        <div class="task-footer">
+                                            <div class="task-tags">
+                                                @if (!string.IsNullOrEmpty(task.Tag))
+                                                {
+                                                    <span class="task-tag">@task.Tag</span>
+                                                }
+                                            </div>
+                                            <div class="task-meta">
+                                                @if (task.DueDate.HasValue)
+                                                {
+                                                    <span><i class="far fa-calendar"></i> @task.DueDate.Value.ToString("MMM dd")</span>
+                                                }
+                                                <div class="task-assignee">@Model.Username.Substring(0, 2).ToUpper()</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
-                            <h4 class="task-title">Fix UI bugs</h4>
-                            <p class="task-description">Resolved alignment issues and improved responsiveness.</p>
-                            <div class="task-footer">
-                                <div class="task-tags"><span class="task-tag">Frontend</span></div>
-                                <div class="task-meta">
-                                    <span><i class="far fa-calendar"></i> Dec 15</span>
-                                    <div class="task-assignee">JD</div>
+
+                            <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                        </div>
+
+                        <!-- Completed Column -->
+                        <div class="kanban-column">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <h3>Completed</h3>
+                                    <span class="column-badge">@board.Tasks.Count(t => t.Status.Equals("Completed", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("Done", StringComparison.OrdinalIgnoreCase))</span>
                                 </div>
                             </div>
+
+                            <div class="task-list">
+                                @foreach (var task in board.Tasks.Where(t => t.Status.Equals("Completed", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("Done", StringComparison.OrdinalIgnoreCase)))
+                                {
+                                    <div class="task-card">
+                                        <div class="task-header">
+                                            <span class="task-priority priority-low"></span>
+                                            <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                                        </div>
+                                        <h4 class="task-title">@task.Title</h4>
+                                        <p class="task-description">@task.Description</p>
+                                        <div class="task-footer">
+                                            <div class="task-tags">
+                                                @if (!string.IsNullOrEmpty(task.Tag))
+                                                {
+                                                    <span class="task-tag">@task.Tag</span>
+                                                }
+                                            </div>
+                                            <div class="task-meta">
+                                                @if (task.DueDate.HasValue)
+                                                {
+                                                    <span><i class="far fa-calendar"></i> @task.DueDate.Value.ToString("MMM dd")</span>
+                                                }
+                                                <div class="task-assignee">@Model.Username.Substring(0, 2).ToUpper()</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
                         </div>
                     </div>
-                    <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
-                </div>
-            </div>
+                }
+            }
         </main>
     </div>
 

@@ -15,7 +15,7 @@ namespace ToDoWeb.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        
         public IActionResult Register()
         {
             return View();
@@ -42,7 +42,7 @@ namespace ToDoWeb.Controllers
             return RedirectToAction("Login");
         }
 
-        [HttpGet]
+        
         public IActionResult Login()
         {
             return View();
@@ -65,7 +65,7 @@ namespace ToDoWeb.Controllers
                 return View(query); 
             }
             var user = result.Data;
-            HttpContext.Session.SetString("UserEmail", user.Email);
+            HttpContext.Session.SetString("UserEmail", user.Email); //key-value
             HttpContext.Session.SetInt32("UserId", user.Id);
 
             TempData["SuccessMessage"] = result.Message;
