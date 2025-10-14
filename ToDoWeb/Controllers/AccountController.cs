@@ -69,7 +69,7 @@ namespace ToDoWeb.Controllers
             HttpContext.Session.SetInt32("UserId", user.Id);
 
             TempData["SuccessMessage"] = result.Message;
-            return RedirectToAction("Dashboard", "Main");
+            return RedirectToAction("Boards", "Main");
         }
     }
 }

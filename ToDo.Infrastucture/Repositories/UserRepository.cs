@@ -17,7 +17,7 @@ namespace ToDo.Infrastucture.Repositories
         {
             _context = context;
         }
-        public async Task AddAync(User user)
+        public async Task AddAsync(User user)
         {
             await _context.Users.AddAsync(user); 
             

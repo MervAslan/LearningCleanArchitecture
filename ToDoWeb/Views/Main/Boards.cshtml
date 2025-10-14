@@ -10,7 +10,7 @@
     <title>Dashboard - ToDoApp</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
-    <link rel="stylesheet" href="~/css/dashboard.css">
+    <link rel="stylesheet" href="~/css/boards.css">
 </head>
 <body>
     <div class="animated-bg"></div>
@@ -46,12 +46,12 @@
                     @foreach (var category in Model.Categories)
                     {
                         <li class="category-item">
-                            <a href="#" class="category-link">
+                            <a href="" class="category-link">
                                 <div class="category-info">
                                     <span class="category-icon" style="background: #667eea;"></span>
                                     <span>@category.Name</span>
                                 </div>
-                                <span class="category-count">@category.Boards.Sum(b => b.Tasks.Count)</span>
+                                <span class="category-count">@category.Boards.Count</span>
                             </a>
                         </li>
                     }
@@ -86,17 +86,11 @@
                     <header class="dashboard-header">
                         <div class="header-left">
                             <h1>@board.Title</h1>
-                            <div class="breadcrumb">
-                                <i class="fas fa-home"></i>
-                                <span>/</span>
-                                <span>Dashboard</span>
-                                <span>/</span>
-                                <span>@category.Name</span>
-                            </div>
+                            
                         </div>
                         <div class="header-right">
                             <button class="btn btn-secondary"><i class="fas fa-filter"></i> Filter</button>
-                            <button class="btn btn-primary"><i class="fas fa-plus"></i> New Task</button>
+                            <button class="btn btn-primary"><i class="fas fa-plus"></i> New Board </button>
                         </div>
                     </header>
 

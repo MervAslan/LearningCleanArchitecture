@@ -15,7 +15,7 @@ namespace ToDoWeb.Controllers
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> Dashboard()
+        public async Task<IActionResult> Boards()
         {
             
             var email = HttpContext.Session.GetString("UserEmail");

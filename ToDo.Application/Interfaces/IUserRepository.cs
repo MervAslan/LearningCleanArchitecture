@@ -4,7 +4,7 @@ namespace ToDo.Application.Interfaces
 {
         public interface IUserRepository
         {
-            Task AddAync(User user);
+            Task AddAsync(User user);
             Task<User?> GetByUsernameAsync(string username);
             Task<User?> GetByEmailAsync(string email);
             Task SaveChangesAsync();
