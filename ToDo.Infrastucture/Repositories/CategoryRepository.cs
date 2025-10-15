@@ -44,5 +44,10 @@ namespace ToDo.Infrastucture.Repositories
         {
             _context.Category.Remove(category);
         }
+        public async Task<Category?> GetByNameAndUserIdAsync(string categoryName, int userId)
+        {
+            return await _context.Category
+                .FirstOrDefaultAsync(c => c.Name == categoryName && c.UserId == userId);
+        }
     }
 }

@@ -5,6 +5,7 @@ using ToDo.Application.Interfaces;
 using ToDo.Application.Mappings;
 using ToDo.Infrastucture.Contexts;
 using ToDo.Infrastucture.Repositories;
+using ToDo.Infrastucture.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,11 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddSession();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddHttpContextAccessor();
+
+
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 var app = builder.Build();

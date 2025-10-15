@@ -37,6 +37,8 @@ namespace ToDo.Application.CQRS.Queries.UserQueries
 
             var userDto = _mapper.Map<UserDto>(user);
             return Result<UserDto>.Success(userDto, "Giriş başarılı!");
+
+
         }
 
         private string HashPassword(string password)
