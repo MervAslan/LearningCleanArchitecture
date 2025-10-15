@@ -17,7 +17,7 @@ namespace ToDo.Application.Mappings
             CreateMap<Category, CategoryDto>();
             CreateMap<Board, BoardDto>();
             CreateMap<TaskItem, TaskItemDto>();
-            CreateMap<CreateCategoryCommand, CategoryDto>();
+            CreateMap<CreateCategoryCommand, Category>();
 
         }
     } 

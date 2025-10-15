@@ -35,6 +35,7 @@ namespace ToDo.Application.CQRS.Commands.CategoryCommands
             var existingCategory = await _categoryRepository.GetByNameAndUserIdAsync(request.NewCategoryName, currentUserId);
             if (existingCategory != null && existingCategory.Id != request.CategoryId) return Result<CategoryDto>.Failure("Bu isimde başka bir kategori zaten mevcut.");
 
+
             category.Name = request.NewCategoryName; 
             _categoryRepository.Update(category);
             await _categoryRepository.SaveChangesAsync();

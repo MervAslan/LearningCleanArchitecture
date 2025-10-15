@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ToDo.Application.CQRS.Queries.DashboardQueries;
 using ToDo.Application.Interfaces;
+using static ToDo.Application.CQRS.Queries.DashboardQueries.DashboardQuery;
 
 
 namespace ToDoWeb.Controllers
@@ -31,8 +31,8 @@ namespace ToDoWeb.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var query = new DashboardQuery.GetUserDashboardQuery(); // yeni instance
-            var result = await _mediator.Send(query);
+            var query = new GetUserDashboardQuery();  // yeni instance oluşturduk bunu oluşturmamızın sebebi parametresiz olması. 
+            var result = await _mediator.Send(query); // parametresiz olmasının sebebi ise herhangi bir bind işleminin olmaması. 
 
             if (!result.IsSuccess)
             {
@@ -42,6 +42,7 @@ namespace ToDoWeb.Controllers
 
             return View(result.Data);
         }
+
 
 
     }
