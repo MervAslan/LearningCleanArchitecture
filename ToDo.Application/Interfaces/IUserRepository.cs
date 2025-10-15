@@ -8,7 +8,7 @@ namespace ToDo.Application.Interfaces
             Task<User?> GetByUsernameAsync(string username);
             Task<User?> GetByEmailAsync(string email);
             Task SaveChangesAsync();
-            Task<User?> GetUserWithDetailsAsync(string email);
+            Task<User?> GetUserWithDetailsAsync(int Id);
 
 
     }

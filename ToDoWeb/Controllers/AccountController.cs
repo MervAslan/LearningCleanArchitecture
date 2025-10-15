@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MediatR;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using ToDo.Application.CQRS.Commands.UserCommands;
 using ToDo.Application.CQRS.Queries.UserQueries;
 
@@ -65,8 +68,24 @@ namespace ToDoWeb.Controllers
                 return View(query); 
             }
             var user = result.Data;
-            HttpContext.Session.SetString("UserEmail", user.Email); //key-value
-            HttpContext.Session.SetInt32("UserId", user.Id);
+            var claims = new List<Claim> //kullanıcı bilgilerini tutan claimler
+            {
+                 new Claim("UserId", user.Id.ToString()),
+                 new Claim(ClaimTypes.Email, user.Email),
+                 new Claim(ClaimTypes.Name, user.Username ?? "")
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            
+            await HttpContext.SignInAsync(  //cookie ile oturum 
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.UtcNow.AddHours(2)
+                });
 
             TempData["SuccessMessage"] = result.Message;
             return RedirectToAction("Boards", "Main");

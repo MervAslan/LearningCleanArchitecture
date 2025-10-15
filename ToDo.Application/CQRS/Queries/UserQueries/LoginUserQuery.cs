@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System.ComponentModel.DataAnnotations;
 using ToDo.Application.DTOs;
 using ToDo.Application.Helpers;
 using ToDo.Application.Interfaces;
@@ -9,10 +8,9 @@ namespace ToDo.Application.CQRS.Queries.UserQueries
 {
     public class LoginUserQuery : IRequest<Result<UserDto>>
     {
-        [Required]
-        [EmailAddress]
+        
         public string Email { get; set; }
-        [Required]
+        
         public string Password { get; set; }
     }
 
