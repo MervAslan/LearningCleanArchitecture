@@ -173,27 +173,7 @@ body {
     font-weight: 600;
 }
 
-.add-category-btn {
-    width: 100%;
-    padding: 0.75rem;
-    background: transparent;
-    border: 1px dashed rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    color: var(--text-light);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    margin-top: 1rem;
-}
 
-    .add-category-btn:hover {
-        border-color: rgba(102, 126, 234, 0.5);
-        background: rgba(102, 126, 234, 0.05);
-    }
 
 .user-profile {
     padding: 1.5rem;
@@ -281,6 +261,7 @@ body {
     background: var(--primary-gradient);
     color: white;
     box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    
 }
 
     .btn-primary:hover {
@@ -581,6 +562,7 @@ body {
 @media (max-width: 1024px) {
     .sidebar {
         transform: translateX(-100%);
+        
     }
 
         .sidebar.open {
@@ -647,3 +629,94 @@ body {
     ::-webkit-scrollbar-thumb:hover {
         background: rgba(102, 126, 234, 0.5);
     }
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.3s ease;
+}
+
+    .modal-backdrop.open {
+        display: flex;
+    }
+
+.modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+@keyframes fadeIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Kategori Ekle Butonu */
+.add-category-btn {
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    margin-left: 55px
+}
+
+    .add-category-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+    }
+

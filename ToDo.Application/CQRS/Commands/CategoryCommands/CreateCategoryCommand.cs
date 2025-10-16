@@ -9,7 +9,8 @@ namespace ToDo.Application.CQRS.Commands.CategoryCommands
 {
     public class CreateCategoryCommand : IRequest<Result<CategoryDto>>
     {
-       public string CategoryName { get; set; }
+       public string Name { get; set; }
+
        
 
     }
@@ -30,10 +31,10 @@ namespace ToDo.Application.CQRS.Commands.CategoryCommands
             var currentUserId = _currentUserService.CurrentUserId;
             if (currentUserId == null) return Result<CategoryDto>.Failure("Oturum bulunamadı.");
 
-            if (string.IsNullOrWhiteSpace(request.CategoryName))
+            if (string.IsNullOrWhiteSpace(request.Name))
                 return Result<CategoryDto>.Failure("Kategori adı boş olamaz.");
 
-            var existingCategory = await _categoryRepository.GetByNameAndUserIdAsync(request.CategoryName, currentUserId);
+            var existingCategory = await _categoryRepository.GetByNameAndUserIdAsync(request.Name, currentUserId);
             if (existingCategory != null) return Result<CategoryDto>.Failure("Kategori zaten mevcut.");
 
             var category = _mapper.Map<Category>(request);

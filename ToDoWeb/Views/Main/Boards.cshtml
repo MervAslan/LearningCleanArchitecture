@@ -57,19 +57,17 @@
                     }
                 </ul>
             </div>
+            <button type="button" class="btn add-category-btn" onclick="openCategoryModal()"><i class="fas fa-plus"></i>New Category</button>
 
             <div class="sidebar-section">
                 <h3 class="section-title">Quick Actions</h3>
                 <form asp-action="Logout" asp-controller="Account" method="post">
-                    <button class="add-category-btn" style="margin-top: 0;">
-                        <i class="fas fa-arrow-right-from-bracket"></i>
-                        <span>Logout</span>
-                    </button>
+                    <button class="btn add-category-btn" style="margin-top: 0;"><i class="fa fa-sign-out "></i>Logout</button>
                 </form>
             </div>
 
             <div class="user-profile">
-                <div class="user-avatar">@Model.Username.Substring(0, 2).ToUpper()</div>
+                <div class="user-avatar">@Model.Username.Substring(0, 2).ToUpper()</div> 
                 <div class="user-info">
                     <h4>@Model.Username</h4>
                     <p>@Model.Email</p>
@@ -226,11 +224,67 @@
         </main>
     </div>
 
+    <!-- Category Create Modal -->
+    <div id="categoryModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Yeni Kategori</h3>
+                <button class="modal-close" aria-label="Kapat" onclick="closeCategoryModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form asp-controller="Category" asp-action="Create" method="post" class="modal-body">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label for="CategoryName">Kategori Adı</label>
+                    <input id="CategoryName" name="Name" type="text" placeholder="Örn: Kişisel, İş, Okul..." required />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">İptal</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Oluştur
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
+        // Sidebar aç/kapa
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
         }
+
+        // Modal aç/kapa fonksiyonları
+        document.addEventListener("DOMContentLoaded", function () {
+            const modalEl = document.getElementById('categoryModal');
+
+            window.openCategoryModal = function () {
+                document.getElementById('CategoryName').value = '';
+                modalEl.classList.add('open');
+                modalEl.setAttribute('aria-hidden', 'false');
+                setTimeout(() => document.getElementById('CategoryName').focus(), 50);
+            };
+
+            window.closeCategoryModal = function () {
+                modalEl.classList.remove('open');
+                modalEl.setAttribute('aria-hidden', 'true');
+            };
+
+            modalEl.addEventListener('click', (e) => {
+                if (e.target === modalEl) closeCategoryModal();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modalEl.classList.contains('open')) {
+                    closeCategoryModal();
+                }
+            });
+        });
     </script>
+
 </body>
 </html>
