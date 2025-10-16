@@ -33,5 +33,43 @@ namespace ToDoWeb.Controllers
 
 
         }
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteCategoryCommand command)
+        {
+            var userId = _currentUserService.CurrentUserId;
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "Lütfen tekrar giriş yapın.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                TempData["ErrorMessage"] = result.Message;
+                return RedirectToAction("Boards", "Main");
+            }
+            TempData["SuccessMessage"] = result.Message;
+            return RedirectToAction("Boards", "Main");
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateCategoryCommand command)
+        {
+            var userId = _currentUserService.CurrentUserId;
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "Lütfen tekrar giriş yapın.";
+                return RedirectToAction("Login", "Account");
+            }
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                TempData["ErrorMessage"] = result.Message;
+                return RedirectToAction("Boards", "Main");
+            }
+            TempData["SuccessMessage"] = result.Message;
+            return RedirectToAction("Boards", "Main");
+        }
+
     }
 }

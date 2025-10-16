@@ -130,6 +130,7 @@ body {
 
 .category-item {
     margin-bottom: 0.5rem;
+    position: relative;
 }
 
 .category-link {
@@ -557,7 +558,7 @@ body {
     .mobile-menu-toggle:hover {
         background: rgba(255, 255, 255, 0.1);
     }
-/* Responsive */
+
 
 @media (max-width: 1024px) {
     .sidebar {
@@ -610,7 +611,7 @@ body {
         flex: 0 0 260px;
     }
 }
-/* Scrollbar */
+
 
 ::-webkit-scrollbar {
     width: 8px;
@@ -645,7 +646,7 @@ body {
     }
 
 .modal {
-    background: #fff;
+    background: var(--dark-bg);
     border-radius: 16px;
     padding: 20px;
     width: 90%;
@@ -707,16 +708,103 @@ body {
     }
 }
 
-/* Kategori Ekle Butonu */
+
 .add-category-btn {
     background: var(--primary-gradient);
     color: white;
     box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-    margin-left: 55px
+    margin-left: 50px
 }
 
     .add-category-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
     }
+.category-dropdown {
+    position: absolute;
+    right: 10px;
+    top: 100%;
+    background: rgba(20, 20, 40, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 0.5rem;
+    min-width: 160px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
 
+    .category-dropdown.open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+    }
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+}
+
+    .dropdown-item:hover {
+        background: rgba(102, 126, 234, 0.15);
+    }
+
+    .dropdown-item.delete:hover {
+        background: rgba(245, 87, 108, 0.15);
+        color: #ff6b8a;
+    }
+
+.dropdown-icon {
+    font-size: 1rem;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0.5rem 0;
+}
+.category-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-menu-btn {
+    background: transparent;
+    border: none;
+    color: #8e9aaf;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    opacity: 0;
+}
+
+.category-item:hover .category-menu-btn {
+    opacity: 1;
+}
+
+.category-menu-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+}

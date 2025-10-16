@@ -49,5 +49,6 @@ namespace ToDo.Infrastucture.Repositories
             return await _context.Category
                 .FirstOrDefaultAsync(c => c.Name == categoryName && c.UserId == userId);
         }
+
     }
 }
