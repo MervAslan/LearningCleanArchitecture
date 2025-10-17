@@ -111,9 +111,11 @@
                             <p style="color: #94a3b8; margin-top: 0.5rem;">No boards yet. Create your first board!</p>
                         }
                     </div>
+                    
                     <div class="header-right">
-                        <button class="btn btn-primary"><i class="fas fa-plus"></i> New Board </button>
+                        <button class="btn btn-primary" onclick="openBoardModal()"><i class="fas fa-plus"></i> New Board </button>
                     </div>
+                    
                 </header>
 
                 @await Html.PartialAsync("_Notification")
@@ -342,6 +344,32 @@
             </form>
         </div>
     </div>
+    <!-- Board Create Pop-up -->
+    <div id="boardCreateModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>New Board</h3>
+                <button class="modal-close" aria-label="Close" onclick="closeModal('boardCreateModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form asp-controller="Board" asp-action="CreateBoard" method="post" class="modal-body">
+                <input type="hidden" id="CategoryId" name="CategoryId" value="" />
+                <div class="form-group">
+                    <label for="BoardName">Board Name</label>
+                    <input id="BoardName" name="Title" type="text" placeholder="Example: Board1, Board2, Board3..." required />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('boardCreateModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Create
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
         // Sidebar toggle
@@ -362,6 +390,7 @@
             const categoryModal = document.getElementById('categoryModal');
             const editModal = document.getElementById('editModal');
             const deleteModal = document.getElementById('deleteModal');
+            const boardCreateModal = document.getElementById('boardCreateModal');
 
             // Category Create Modal
             window.openCategoryModal = function () {
@@ -387,6 +416,15 @@
                 deleteModal.classList.add('open');
                 deleteModal.setAttribute('aria-hidden', 'false');
             };
+            //board create modal
+            window.openBoardModal= function (categoryId) {
+                document.getElementById('CategoryId').value=categoryId;
+                document.getElementById('BoardName').value = '';
+                boardCreateModal.classList.add('open');
+                boardCreateModal.setAttribute('aria-hidden', 'false');
+                setTimeout(() => document.getElementById('BoardName').focus(), 50);
+            };
+
 
             // Modal dışına tıklayınca kapatma
             [categoryModal, editModal, deleteModal].forEach(modal => {
