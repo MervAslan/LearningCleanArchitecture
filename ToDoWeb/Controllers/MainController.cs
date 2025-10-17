@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ToDo.Application.Interfaces;
+using ToDo.Domain.Entities;
 using static ToDo.Application.CQRS.Queries.DashboardQueries.DashboardQuery;
 
 
@@ -18,7 +19,7 @@ namespace ToDoWeb.Controllers
             _currentUserService = currentUserService;
         }
 
-        public async Task<IActionResult> Boards()
+        public async Task<IActionResult> Boards(int? categoryId)
         {
             int currentUserId;
             try
@@ -39,7 +40,7 @@ namespace ToDoWeb.Controllers
                 TempData["ErrorMessage"] = result.Message;
                 return RedirectToAction("Login", "Account");
             }
-
+            ViewBag.CategoryId = categoryId;
             return View(result.Data);
         }
 
