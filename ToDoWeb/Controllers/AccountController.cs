@@ -68,7 +68,7 @@ namespace ToDoWeb.Controllers
                 return View(query); 
             }
             var user = result.Data;
-            var claims = new List<Claim> //kullanıcı bilgilerini tutan claimler
+            var claims = new List<Claim> 
             {
                  new Claim("UserId", user.Id.ToString()),
                  new Claim(ClaimTypes.Email, user.Email),
@@ -78,7 +78,7 @@ namespace ToDoWeb.Controllers
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             
-            await HttpContext.SignInAsync(  //cookie ile oturum 
+            await HttpContext.SignInAsync(  
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
                 new AuthenticationProperties

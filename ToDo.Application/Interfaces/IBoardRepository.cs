@@ -9,7 +9,7 @@ namespace ToDo.Application.Interfaces
 {
     public interface IBoardRepository
     {
-        Task<List<Board>> GetAllAsync();
+        Task<List<Board>> GetAllAsync(int categoryId);
         Task<Board?> GetByIdAsync(int id);
         Task AddAsync(Board board);
         Task SaveChangesAsync();
