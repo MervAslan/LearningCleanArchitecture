@@ -9,6 +9,10 @@ namespace ToDo.Infrastucture.Repositories
     public class BoardRepository : IBoardRepository
     {
         private readonly ApplicationDbContext _context;
+        public BoardRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public async Task<List<Board>> GetAllAsync(int categoryId)
         {
             return await _context.Board

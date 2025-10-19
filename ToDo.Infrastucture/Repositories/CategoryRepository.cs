@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToDo.Application.Interfaces;
+﻿using ToDo.Application.Interfaces;
 using ToDo.Infrastucture.Contexts;
 using ToDo.Domain.Entities;
 using Microsoft.EntityFrameworkCore;

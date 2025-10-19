@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ToDo.Application.CQRS.Commands.UserCommands;
 using ToDo.Application.CQRS.Commands.CategoryCommands;
+using ToDo.Application.CQRS.Commands.BoardCommands;
 using ToDo.Application.DTOs;
 using ToDo.Domain.Entities;
 
@@ -18,6 +19,7 @@ namespace ToDo.Application.Mappings
             CreateMap<Board, BoardDto>();
             CreateMap<TaskItem, TaskItemDto>();
             CreateMap<CreateCategoryCommand, Category>();
+            CreateMap<CreateBoardCommand, Board>(); 
 
         }
     } 

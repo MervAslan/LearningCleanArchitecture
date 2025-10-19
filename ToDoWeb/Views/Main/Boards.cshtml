@@ -1,4 +1,5 @@
-﻿@model ToDo.Application.DTOs.UserDto
+﻿
+@model ToDo.Application.DTOs.UserDto
 @{
     Layout = null;
 }
@@ -113,7 +114,7 @@
                     </div>
                     
                     <div class="header-right">
-                        <button class="btn btn-primary" onclick="openBoardModal()"><i class="fas fa-plus"></i> New Board </button>
+                        <button class="btn btn-primary" onclick="openBoardModal(@selectedCategory.Id)"><i class="fas fa-plus"></i> New Board </button>
                     </div>
                     
                 </header>
@@ -372,27 +373,27 @@
     </div>
 
     <script>
-        // Sidebar toggle
+        
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
         }
 
-        // TEK MODAL KAPATMA FONKSİYONU - Tüm modaller için kullanılır
+        
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.classList.remove('open');
             modal.setAttribute('aria-hidden', 'true');
         }
 
-        // Modal açma ve kapatma - Category Create
+        
         document.addEventListener("DOMContentLoaded", function () {
             const categoryModal = document.getElementById('categoryModal');
             const editModal = document.getElementById('editModal');
             const deleteModal = document.getElementById('deleteModal');
             const boardCreateModal = document.getElementById('boardCreateModal');
 
-            // Category Create Modal
+            
             window.openCategoryModal = function () {
                 document.getElementById('CategoryName').value = '';
                 categoryModal.classList.add('open');
@@ -400,7 +401,7 @@
                 setTimeout(() => document.getElementById('CategoryName').focus(), 50);
             };
 
-            // Category Edit Modal
+            
             window.editCategory = function (categoryId, currentName) {
                 document.getElementById('EditCategoryId').value = categoryId;
                 document.getElementById('EditCategoryName').value = currentName;
@@ -409,14 +410,14 @@
                 setTimeout(() => document.getElementById('EditCategoryName').focus(), 50);
             };
 
-            // Category Delete Modal
+            
             window.deleteCategory = function (categoryId, categoryName) {
                 document.getElementById('DeleteCategoryId').value = categoryId;
                 document.getElementById('DeleteCategoryName').value = categoryName;
                 deleteModal.classList.add('open');
                 deleteModal.setAttribute('aria-hidden', 'false');
             };
-            //board create modal
+           
             window.openBoardModal= function (categoryId) {
                 document.getElementById('CategoryId').value=categoryId;
                 document.getElementById('BoardName').value = '';
@@ -426,7 +427,7 @@
             };
 
 
-            // Modal dışına tıklayınca kapatma
+            
             [categoryModal, editModal, deleteModal].forEach(modal => {
                 modal.addEventListener('click', (e) => {
                     if (e.target === modal) {
@@ -435,7 +436,7 @@
                 });
             });
 
-            // ESC tuşu ile kapatma
+           
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     if (categoryModal.classList.contains('open')) closeModal('categoryModal');
@@ -445,7 +446,7 @@
             });
         });
 
-        // Dropdown menü işlemleri
+        
         let activeDropdown = null;
 
         function toggleDropdown(event, index) {
