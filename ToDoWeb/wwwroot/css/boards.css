@@ -71,6 +71,7 @@ body {
 /* Layout */
 
 .dashboard-layout {
+
     display: flex;
     min-height: 100vh;
 }
@@ -210,9 +211,12 @@ body {
 /* Main Content */
 
 .main-content {
+   
     flex: 1;
     margin-left: var(--sidebar-width);
+    margin-right:205px;
     padding: 2rem;
+    min-height: 100vh;
 }
 /* Header */
 
@@ -808,3 +812,17 @@ body {
     background: rgba(255, 255, 255, 0.1);
     color: var(--text-light);
 }
+.board-sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 205px;
+    height: 100vh;
+    background: rgba(15, 15, 35, 0.9);
+    padding: 2rem 0;
+    overflow-y: auto;
+    z-index: 100;
+    transition: all 0.3s ease;
+    
+}
+  -
