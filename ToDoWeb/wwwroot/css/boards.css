@@ -825,4 +825,40 @@ body {
     transition: all 0.3s ease;
     
 }
-  -
+.board-item {
+    margin-bottom: 0.5rem;
+    position: relative;
+
+ }
+
+.board-icon {
+
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.board-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.board-list {
+    list-style: none;
+}
+.board-link:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.board-link.active {
+    background: var(--card-bg);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+
+  

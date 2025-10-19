@@ -1,5 +1,6 @@
 ﻿
 @model ToDo.Application.DTOs.UserDto
+
 @{
     Layout = null;
 }
@@ -89,12 +90,7 @@
                 </div>
             </div>
         </aside>
-        <!--board sidebarı-->
-        <aside class="board-sidebar">
-            <div class="sidebar-brand"></div>
-            <i class="fa-solid fa-square-kanban"></i>
-            <span class="brand-name">Created Boards</span>
-        </aside>
+       
 
         <!-- Main Content -->
         <main class="main-content">
@@ -271,7 +267,44 @@
             }
         </main>
     </div>
+    <!--board sidebarı-->
+    <aside class="board-sidebar">
+        <div class="sidebar-brand brand-icon">
+            <i class="fa-solid fa-list"></i>
+            <span class="brand-name">Created Boards</span>
+        </div>
+        <div class="sidebar-section">
+            <h3 class="section-title">Boards</h3>
+            <ul class="board-list">
+                
+                    @foreach (var board in selectedCategory.Boards)
+                    {
+                        <li class="board-item">
+                            <a asp-action="Boards" asp-controller="Main" asp-route-boardId="@board.Id" class="board-link">
+                                <div class="board-info">
+                                    <span class="board-icon" style="background: #667eea;"></span>
+                                    <span>@board.Title</span>
+                                </div>
 
+                             </a>
+                             <div class="category-dropdown" id="dropdown-@board.Id">
+                                <button class="dropdown-item" onclick="editCategory(@board.Id, '@board.Title')">
+                                    <i class="fa fa-pencil"></i>
+                                    <span>Edit</span>
+                                </button>
+                                <div class="dropdown-divider"></div>
+                                    <button class="dropdown-item delete" onclick="deleteCategory(@board.Id, '@board.Title')">
+                                    <i class="fa fa-trash"></i>
+                                    <span>Delete</span>
+                                </button>
+                            </div>
+                        </li>
+                    }
+
+                
+            </ul>
+        </div>
+    </aside>
     <!-- Category Create Pop-up -->
     <div id="categoryModal" class="modal-backdrop" aria-hidden="true">
         <div class="modal">
