@@ -1,0 +1,97 @@
+﻿@model ToDo.Application.DTOs.UserDto
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ToDoApp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="~/css/boards.css">
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <i class="fas fa-check-circle brand-icon"></i>
+                <span class="brand-name">ToDoApp</span>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title">Navigation</h3>
+                <ul class="category-list">
+                    <li class="category-item">
+                        <a href="#" class="category-link active">
+                            <div class="category-info">
+                                <i class="fas fa-home"></i>
+                                <span>Dashboard</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title">Categories</h3>
+                <ul class="category-list">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <li class="category-item">
+                            <a asp-action="Boards" asp-controller="Main" asp-route-categoryId="@category.Id" class="category-link">
+
+                                <div class="category-info">
+                                    <span class="category-icon" style="background: #667eea;"></span>
+                                    <span>@category.Name</span>
+                                </div>
+                                <div class="category-right">
+                                    <span class="category-count">@category.Boards.Count</span>
+                                    <button class="category-menu-btn" onclick="toggleDropdown(event, @category.Id)">⋮</button>
+                                </div>
+                            </a>
+                            <div class="category-dropdown" id="dropdown-@category.Id">
+                                <button class="dropdown-item" onclick="editCategory(@category.Id, '@category.Name')">
+                                    <i class="fa fa-pencil"></i>
+                                    <span>Edit</span>
+                                </button>
+                                <div class="dropdown-divider"></div>
+                                <button class="dropdown-item delete" onclick="deleteCategory(@category.Id, '@category.Name')">
+                                    <i class="fa fa-trash"></i>
+                                    <span>Delete</span>
+                                </button>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <button type="button" class="btn add-category-btn" onclick="openCategoryModal()"><i class="fas fa-plus"></i>New Category</button>
+
+            <div class="sidebar-section">
+                <h3 class="section-title">Quick Actions</h3>
+                <form asp-action="Logout" asp-controller="Account" method="post">
+                    <button class="btn add-category-btn" style="margin-top: 0;"><i class="fa fa-sign-out "></i>Logout</button>
+                </form>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar">@Model.Username.Substring(0, 2).ToUpper()</div>
+                <div class="user-info">
+                    <h4>@Model.Username</h4>
+                    <p>@Model.Email</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+</body>
+</html>

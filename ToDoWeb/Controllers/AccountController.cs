@@ -88,7 +88,7 @@ namespace ToDoWeb.Controllers
                 });
 
             TempData["SuccessMessage"] = result.Message;
-            return RedirectToAction("Boards", "Main");
+            return RedirectToAction("Dashboard", "Main");
         }
     }
 }

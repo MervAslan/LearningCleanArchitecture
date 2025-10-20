@@ -11,6 +11,7 @@ namespace ToDo.Application.Interfaces
         void Update(Category category);
         void Delete(Category category);
         Task<Category?> GetByNameAndUserIdAsync(string categoryName, int userId);
+        
 
     }
 

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ToDo.Application.CQRS.Commands.BoardCommands;
+using ToDo.Domain.Entities;
 
 
 namespace ToDoWeb.Controllers
@@ -22,9 +23,10 @@ namespace ToDoWeb.Controllers
                 return RedirectToAction("Boards", "Main");
             }
              TempData["SuccessMessage"] = result.Message;
-             return RedirectToAction("Boards", "Main");
+             return RedirectToAction("Boards", "Main", new {categoryId=command.CategoryId,boardId=result.Data.Id});
 
 
         }
+
     }
 }

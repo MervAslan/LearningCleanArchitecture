@@ -19,7 +19,7 @@ namespace ToDoWeb.Controllers
             _currentUserService = currentUserService;
         }
 
-        public async Task<IActionResult> Boards(int? categoryId)
+        public async Task<IActionResult> Boards(int? categoryId,int? boardId)
         {
             int currentUserId;
             try
@@ -41,8 +41,35 @@ namespace ToDoWeb.Controllers
                 return RedirectToAction("Login", "Account");
             }
             ViewBag.CategoryId = categoryId;
+            ViewBag.BoardId = boardId;
+            return View(result.Data);
+        
+        }
+        public async Task<IActionResult> Dashboard()
+        {
+            int currentUserId;
+            try
+            {
+                currentUserId = _currentUserService.CurrentUserId;
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Lütfen tekrar giriş yapın.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            var query = new GetUserDashboardQuery();  // yeni instance oluşturduk bunu oluşturmamızın sebebi parametresiz olması. 
+            var result = await _mediator.Send(query); // parametresiz olmasının sebebi ise herhangi bir bind işleminin olmaması. 
+
+            if (!result.IsSuccess)
+            {
+                TempData["ErrorMessage"] = result.Message;
+                return RedirectToAction("Login", "Account");
+            }
+           
             return View(result.Data);
         }
+        
 
 
 

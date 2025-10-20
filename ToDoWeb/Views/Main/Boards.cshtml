@@ -12,6 +12,7 @@
     <title>Dashboard - ToDoApp</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="~/css/boards.css">
 </head>
 <body>
@@ -30,16 +31,18 @@
 
             <div class="sidebar-section">
                 <h3 class="section-title">Navigation</h3>
-                <ul class="category-list">
-                    <li class="category-item">
-                        <a href="#" class="category-link active">
-                            <div class="category-info">
-                                <i class="fas fa-home"></i>
-                                <span>Dashboard</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
+               
+                    <ul class="category-list">
+                        <li class="category-item">
+                             <a asp-controller="Main" asp-action="Dashboard" class="category-link active">
+                                <div class="category-info">
+                                    <i class="fas fa-home"></i>
+                                    <span>Dashboard</span>
+                                </div>
+                             </a>
+                        </li>
+                    </ul>
+                </a>
             </div>
 
             <div class="sidebar-section">
@@ -49,6 +52,7 @@
                     {
                         <li class="category-item">
                             <a asp-action="Boards" asp-controller="Main" asp-route-categoryId="@category.Id" class="category-link">
+                                
                                 <div class="category-info">
                                     <span class="category-icon" style="background: #667eea;"></span>
                                     <span>@category.Name</span>
@@ -95,8 +99,21 @@
         <!-- Main Content -->
         <main class="main-content">
             @{
-                var selectedCategoryId = ViewBag.CategoryId ?? Model.Categories.FirstOrDefault()?.Id;
-                var selectedCategory = Model.Categories.FirstOrDefault(c => c.Id == selectedCategoryId);
+                // ensure we treat ViewBag.CategoryId/BoardId as nullable ints
+                int? requestedCategoryId = ViewBag.CategoryId as int?;
+                int? requestedBoardId = ViewBag.BoardId as int?;
+
+                // pick a selected category that actually exists, or fallback to the first category
+                var selectedCategory = requestedCategoryId.HasValue
+                    ? Model.Categories.FirstOrDefault(c => c.Id == requestedCategoryId.Value)
+                    : null;
+                selectedCategory ??= Model.Categories.FirstOrDefault();
+
+                // if no category exists, avoid accessing Boards
+                var selectedBoard = (selectedCategory != null)
+                    ? (requestedBoardId.HasValue ? selectedCategory.Boards.FirstOrDefault(b => b.Id == requestedBoardId.Value) : null)
+                    : null;
+                selectedBoard ??= selectedCategory?.Boards.FirstOrDefault();
             }
 
             @if (selectedCategory != null)
@@ -106,7 +123,7 @@
                     <div class="header-left">
                         @if (selectedCategory.Boards.Any())
                         {
-                            <h1>@selectedCategory.Boards.FirstOrDefault()?.Title</h1>
+                            <h1>@selectedBoard.Title</h1>
                         }
                         else
                         {
@@ -114,19 +131,18 @@
                             <p style="color: #94a3b8; margin-top: 0.5rem;">No boards yet. Create your first board!</p>
                         }
                     </div>
-                    
+
                     <div class="header-right">
                         <button class="btn btn-primary" onclick="openBoardModal(@selectedCategory.Id)"><i class="fas fa-plus"></i> New Board </button>
                     </div>
-                    
-                </header>
 
+                </header>
+                 
                 @await Html.PartialAsync("_Notification")
 
                 @if (selectedCategory.Boards.Any())
                 {
-                    @foreach (var board in selectedCategory.Boards)
-                    {
+                    
 
                         <!-- Kanban Board -->
                         <div class="kanban-board">
@@ -135,12 +151,12 @@
                                 <div class="column-header">
                                     <div class="column-title">
                                         <h3>To Do</h3>
-                                        <span class="column-badge">@board.Tasks.Count(t => t.Status.Equals("To Do", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("ToDo", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase))</span>
+                                        <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("To Do"))</span>
                                     </div>
                                 </div>
 
                                 <div class="task-list">
-                                    @foreach (var task in board.Tasks.Where(t => t.Status.Equals("To Do", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("ToDo", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase)))
+                                @foreach (var task in selectedBoard.Tasks.Where(t => t.Status.Equals("To Do")))
                                     {
                                         <div class="task-card">
                                             <div class="task-header">
@@ -176,12 +192,12 @@
                                 <div class="column-header">
                                     <div class="column-title">
                                         <h3>In Progress</h3>
-                                        <span class="column-badge">@board.Tasks.Count(t => t.Status.Equals("In Progress", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("InProgress", StringComparison.OrdinalIgnoreCase))</span>
+                                    <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("In Progress"))</span>
                                     </div>
                                 </div>
 
                                 <div class="task-list">
-                                    @foreach (var task in board.Tasks.Where(t => t.Status.Equals("In Progress", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("InProgress", StringComparison.OrdinalIgnoreCase)))
+                                @foreach (var task in selectedBoard.Tasks.Where(t => t.Status.Equals("In Progress")))
                                     {
                                         <div class="task-card">
                                             <div class="task-header">
@@ -217,12 +233,12 @@
                                 <div class="column-header">
                                     <div class="column-title">
                                         <h3>Completed</h3>
-                                        <span class="column-badge">@board.Tasks.Count(t => t.Status.Equals("Completed", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("Done", StringComparison.OrdinalIgnoreCase))</span>
+                                    <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("Completed"))</span>
                                     </div>
                                 </div>
 
                                 <div class="task-list">
-                                    @foreach (var task in board.Tasks.Where(t => t.Status.Equals("Completed", StringComparison.OrdinalIgnoreCase) || t.Status.Equals("Done", StringComparison.OrdinalIgnoreCase)))
+                                @foreach (var task in selectedBoard.Tasks.Where(t => t.Status.Equals("Completed")))
                                     {
                                         <div class="task-card">
                                             <div class="task-header">
@@ -253,58 +269,61 @@
                                 <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
                             </div>
                         </div>
-                    }
+                    
                 }
                 else
                 {
-                 <!-- Boş durum mesajı -->
+                    <!-- Boş durum mesajı -->
                     <div style="text-align: center; padding: 4rem 2rem; color: #94a3b8;">
                         <i class="fas fa-folder-open" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
                         <h3 style="margin-bottom: 0.5rem;">No boards in this category</h3>
                         <p>Click "New Board" to create your first board</p>
                     </div>
                 }
+           
             }
         </main>
-    </div>
-    <!--board sidebarı-->
-    <aside class="board-sidebar">
-        <div class="sidebar-brand brand-icon">
-            <i class="fa-solid fa-list"></i>
-            <span class="brand-name">Created Boards</span>
-        </div>
-        <div class="sidebar-section">
-            <h3 class="section-title">Boards</h3>
-            <ul class="board-list">
-                
-                    @foreach (var board in selectedCategory.Boards)
-                    {
-                        <li class="board-item">
-                            <a asp-action="Boards" asp-controller="Main" asp-route-boardId="@board.Id" class="board-link">
-                                <div class="board-info">
-                                    <span class="board-icon" style="background: #667eea;"></span>
-                                    <span>@board.Title</span>
-                                </div>
+        <!--board sidebarı-->
 
-                             </a>
-                             <div class="category-dropdown" id="dropdown-@board.Id">
-                                <button class="dropdown-item" onclick="editCategory(@board.Id, '@board.Title')">
-                                    <i class="fa fa-pencil"></i>
-                                    <span>Edit</span>
-                                </button>
-                                <div class="dropdown-divider"></div>
+            <aside class="board-sidebar">
+                <div class="sidebar-brand brand-icon">
+                    <i class="fa-solid fa-list"></i>
+                    <span class="brand-name">Created Boards</span>
+                </div>
+                <div class="sidebar-section">
+                    <h3 class="section-title">Boards</h3>
+                    <ul class="board-list">
+
+                        @foreach (var board in selectedCategory.Boards)
+                        {
+                            <li class="board-item">
+                                <a asp-action="Boards" asp-controller="Main" asp-route-categoryId="@selectedCategory.Id" asp-route-boardId="@board.Id" class="board-link">
+                                    <div class="board-info">
+                                        <span class="board-icon" style="background: #667eea;"></span>
+                                        <span>@board.Title</span>
+                                    </div>
+
+                                </a>
+                                <div class="category-dropdown" id="dropdown-@board.Id">
+                                    <button class="dropdown-item" onclick="editCategory(@board.Id, '@board.Title')">
+                                        <i class="fa fa-pencil"></i>
+                                        <span>Edit</span>
+                                    </button>
+                                    <div class="dropdown-divider"></div>
                                     <button class="dropdown-item delete" onclick="deleteCategory(@board.Id, '@board.Title')">
-                                    <i class="fa fa-trash"></i>
-                                    <span>Delete</span>
-                                </button>
-                            </div>
-                        </li>
-                    }
+                                        <i class="fa fa-trash"></i>
+                                        <span>Delete</span>
+                                    </button>
+                                </div>
+                            </li>
+                        }
 
-                
-            </ul>
-        </div>
-    </aside>
+
+                    </ul>
+                </div>
+            </aside>
+    </div>
+
     <!-- Category Create Pop-up -->
     <div id="categoryModal" class="modal-backdrop" aria-hidden="true">
         <div class="modal">
@@ -384,32 +403,34 @@
             </form>
         </div>
     </div>
-    <!-- Board Create Pop-up -->
-    <div id="boardCreateModal" class="modal-backdrop" aria-hidden="true">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>New Board</h3>
-                <button class="modal-close" aria-label="Close" onclick="closeModal('boardCreateModal')">
-                    <i class="fas fa-times"></i>
-                </button>
+      <!-- Board Create Pop-up -->
+            <div id="boardCreateModal" class="modal-backdrop" aria-hidden="true">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h3>New Board</h3>
+                        <button class="modal-close" aria-label="Close" onclick="closeModal('boardCreateModal')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form asp-controller="Board" asp-action="CreateBoard"  method="post" class="modal-body">
+                        <input type="hidden" id="CategoryId" name="CategoryId" value="" />
+                        <div class="form-group">
+                            <label for="BoardName">Board Name</label>
+                            <input id="BoardName" name="Title" type="text" placeholder="Example: Board1, Board2, Board3..." required />
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeModal('boardCreateModal')">Cancel</button>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check"></i> Create
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <form asp-controller="Board" asp-action="CreateBoard" method="post" class="modal-body">
-                <input type="hidden" id="CategoryId" name="CategoryId" value="" />
-                <div class="form-group">
-                    <label for="BoardName">Board Name</label>
-                    <input id="BoardName" name="Title" type="text" placeholder="Example: Board1, Board2, Board3..." required />
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('boardCreateModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-check"></i> Create
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
 
     <script>
         
@@ -522,6 +543,9 @@
                 }
             });
         });
+                 
+                   
+
     </script>
 </body>
 </html>

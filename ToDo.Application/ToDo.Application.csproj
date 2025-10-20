@@ -22,8 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Queries\CategoryQueries\" />
-    <Folder Include="CQRS\Queries\BoardQueries\" />
     <Folder Include="CQRS\Queries\TaskQueries\" />
   </ItemGroup>
 
