@@ -28,7 +28,7 @@ namespace ToDo.Application.CQRS.Commands.CategoryCommands
 
             _categoryRepository.Delete(category);
             await _categoryRepository.SaveChangesAsync();
-            return Result<bool>.Success(true, "Kategori başarıyla silindi.");
+            return Result<bool>.Success( true,"Kategori başarıyla silindi.");
         }
     }
 

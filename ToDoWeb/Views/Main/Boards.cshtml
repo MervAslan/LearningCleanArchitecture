@@ -59,10 +59,10 @@
                                 </div>
                                 <div class="category-right">
                                     <span class="category-count">@category.Boards.Count</span>
-                                    <button class="category-menu-btn" onclick="toggleDropdown(event, @category.Id)">⋮</button>
+                                    <button class="category-menu-btn" onclick="toggleDropdown(event,'category', @category.Id)">⋮</button>
                                 </div>
                             </a>
-                            <div class="category-dropdown" id="dropdown-@category.Id">
+                            <div class="category-dropdown" id="dropdown-category-@category.Id">
                                 <button class="dropdown-item" onclick="editCategory(@category.Id, '@category.Name')">
                                     <i class="fa fa-pencil"></i>
                                     <span>Edit</span>
@@ -99,17 +99,17 @@
         <!-- Main Content -->
         <main class="main-content">
             @{
-                // ensure we treat ViewBag.CategoryId/BoardId as nullable ints
+                
                 int? requestedCategoryId = ViewBag.CategoryId as int?;
                 int? requestedBoardId = ViewBag.BoardId as int?;
 
-                // pick a selected category that actually exists, or fallback to the first category
+                
                 var selectedCategory = requestedCategoryId.HasValue
                     ? Model.Categories.FirstOrDefault(c => c.Id == requestedCategoryId.Value)
                     : null;
                 selectedCategory ??= Model.Categories.FirstOrDefault();
 
-                // if no category exists, avoid accessing Boards
+                
                 var selectedBoard = (selectedCategory != null)
                     ? (requestedBoardId.HasValue ? selectedCategory.Boards.FirstOrDefault(b => b.Id == requestedBoardId.Value) : null)
                     : null;
@@ -302,15 +302,19 @@
                                         <span class="board-icon" style="background: #667eea;"></span>
                                         <span>@board.Title</span>
                                     </div>
+                                    <div class="category-right">
+                                        <span class="category-count">@board.Tasks.Count</span>
+                                        <button class="category-menu-btn" onclick="toggleDropdown(event,'board',@board.Id)">⋮</button>
+                                    </div>
 
                                 </a>
-                                <div class="category-dropdown" id="dropdown-@board.Id">
-                                    <button class="dropdown-item" onclick="editCategory(@board.Id, '@board.Title')">
+                                <div class="category-dropdown" id="dropdown-board-@board.Id">
+                                    <button class="dropdown-item" onclick="editBoard(@board.Id, '@board.Title')">
                                         <i class="fa fa-pencil"></i>
                                         <span>Edit</span>
                                     </button>
                                     <div class="dropdown-divider"></div>
-                                    <button class="dropdown-item delete" onclick="deleteCategory(@board.Id, '@board.Title')">
+                                    <button class="dropdown-item delete" onclick="deleteBoard(@board.Id, '@board.Title')">
                                         <i class="fa fa-trash"></i>
                                         <span>Delete</span>
                                     </button>
@@ -471,12 +475,26 @@
             };
 
             
+            window.deleteBoard = function (categoryId, categoryName) {
+                document.getElementById('DeleteCategoryId').value = categoryId;
+                document.getElementById('DeleteCategoryName').value = categoryName;
+                deleteModal.classList.add('open');
+                deleteModal.setAttribute('aria-hidden', 'false');
+            };
+            window.editBoard = function (categoryId, currentName) {
+                document.getElementById('EditCategoryId').value = categoryId;
+                document.getElementById('EditCategoryName').value = currentName;
+                editModal.classList.add('open');
+                editModal.setAttribute('aria-hidden', 'false');
+                setTimeout(() => document.getElementById('EditCategoryName').focus(), 50);
+            };
             window.deleteCategory = function (categoryId, categoryName) {
                 document.getElementById('DeleteCategoryId').value = categoryId;
                 document.getElementById('DeleteCategoryName').value = categoryName;
                 deleteModal.classList.add('open');
                 deleteModal.setAttribute('aria-hidden', 'false');
             };
+
            
             window.openBoardModal= function (categoryId) {
                 document.getElementById('CategoryId').value=categoryId;
@@ -509,11 +527,11 @@
         
         let activeDropdown = null;
 
-        function toggleDropdown(event, index) {
+        function toggleDropdown(event,type ,id) {
             event.preventDefault();
             event.stopPropagation();
 
-            const dropdown = document.getElementById(`dropdown-${index}`);
+            const dropdown = document.getElementById(`dropdown-${type}-${id}` );
 
             if (activeDropdown && activeDropdown !== dropdown) {
                 activeDropdown.classList.remove('open');
