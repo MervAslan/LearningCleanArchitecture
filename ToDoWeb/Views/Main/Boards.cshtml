@@ -20,6 +20,7 @@
     <button class="mobile-menu-toggle" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
     </button>
+    @await Html.PartialAsync("_Notification")
 
     <div class="dashboard-layout">
         <!-- Sidebar -->
@@ -123,7 +124,7 @@
                     <div class="header-left">
                         @if (selectedCategory.Boards.Any())
                         {
-                            <h1>@selectedBoard.Title</h1>
+                            <h1> @selectedCategory.Name Category - @selectedBoard.Title Board</h1>
                         }
                         else
                         {
@@ -138,7 +139,7 @@
 
                 </header>
                  
-                @await Html.PartialAsync("_Notification")
+               
 
                 @if (selectedCategory.Boards.Any())
                 {
@@ -434,6 +435,59 @@
                     </form>
                 </div>
             </div>
+
+    <!-- Board Delete Pop-up -->
+    <div id="boardDeleteModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Delete Board</h3>
+                <button class="modal-close" aria-label="Close" onclick="closeModal('boardDeleteModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form asp-controller="Board" asp-action="DeleteBoard" method="post" class="modal-body">
+                <input type="hidden" id="DeleteBoardId" name="BoardId" value="" />
+                <div class="form-group">
+                    <label for="DeleteBoardName">Board Name</label>
+                    <input id="DeleteBoardName" name="BoardName" type="text" readonly />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('boardDeleteModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Delete
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Board  Edit Pop-up -->
+    <div id="boardEditModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Edit Board</h3>
+                <button class="modal-close" aria-label="Close" onclick="closeModal('boardEditModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form asp-controller="Board" asp-action="UpdateBoard" method="post" class="modal-body">
+                <input type="hidden" id="EditBoardId" name="BoardId" value="" />
+                <div class="form-group">
+                    <label for="EditBoardName">Board Name</label>
+                    <input id="EditBoardName" name="newTitle" type="text"  />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('boardEditModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Edit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     
 
     <script>
@@ -456,6 +510,8 @@
             const editModal = document.getElementById('editModal');
             const deleteModal = document.getElementById('deleteModal');
             const boardCreateModal = document.getElementById('boardCreateModal');
+            const boardDeleteModal = document.getElementById('boardDeleteModal');
+            const boardEditModal = document.getElementById('boardEditModal');
 
             
             window.openCategoryModal = function () {
@@ -475,24 +531,19 @@
             };
 
             
-            window.deleteBoard = function (categoryId, categoryName) {
-                document.getElementById('DeleteCategoryId').value = categoryId;
-                document.getElementById('DeleteCategoryName').value = categoryName;
-                deleteModal.classList.add('open');
-                deleteModal.setAttribute('aria-hidden', 'false');
+            
+            window.editBoard = function (boardId, currentName) {
+                document.getElementById('EditBoardId').value = boardId;
+                document.getElementById('EditBoardName').value = currentName;
+                boardEditModal.classList.add('open');
+                boardEditModal.setAttribute('aria-hidden', 'false');
+                setTimeout(() => document.getElementById('EditBoardName').focus(), 50);
             };
-            window.editBoard = function (categoryId, currentName) {
-                document.getElementById('EditCategoryId').value = categoryId;
-                document.getElementById('EditCategoryName').value = currentName;
-                editModal.classList.add('open');
-                editModal.setAttribute('aria-hidden', 'false');
-                setTimeout(() => document.getElementById('EditCategoryName').focus(), 50);
-            };
-            window.deleteCategory = function (categoryId, categoryName) {
-                document.getElementById('DeleteCategoryId').value = categoryId;
-                document.getElementById('DeleteCategoryName').value = categoryName;
-                deleteModal.classList.add('open');
-                deleteModal.setAttribute('aria-hidden', 'false');
+            window.deleteBoard = function (boardId, boardName) {
+                document.getElementById('DeleteBoardId').value = boardId;
+                document.getElementById('DeleteBoardName').value = boardName;
+                boardDeleteModal.classList.add('open');
+                boardDeleteModal.setAttribute('aria-hidden', 'false');
             };
 
            

@@ -22,11 +22,39 @@ namespace ToDoWeb.Controllers
                 TempData["ErrorMessage"] = result.Message;
                 return RedirectToAction("Boards", "Main");
             }
-             TempData["SuccessMessage"] = result.Message;
-             return RedirectToAction("Boards", "Main", new {categoryId=command.CategoryId,boardId=result.Data.Id});
+            TempData["SuccessMessage"] = result.Message;
+            return RedirectToAction("Boards", "Main", new { categoryId = command.CategoryId, boardId = result.Data.Id });
 
 
         }
+        [HttpPost]
+        public async Task<IActionResult> DeleteBoard(DeleteBoardCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                TempData["ErrorMessage"] = result.Message;
+            }
+            else
+            {
+                TempData["SuccessMessage"] = result.Message;
+            }
+            return RedirectToAction("Boards", "Main");
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateBoard(UpdateBoardCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                TempData["ErrorMessage"] = result.Message;
+            }
+            else
+            {
+                TempData["SuccessMessage"] = result.Message;
+            }
+            return RedirectToAction("Boards", "Main");
+        }
     }
 }

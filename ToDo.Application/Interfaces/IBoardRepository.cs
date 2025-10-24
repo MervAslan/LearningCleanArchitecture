@@ -15,7 +15,7 @@ namespace ToDo.Application.Interfaces
         Task SaveChangesAsync();
         void Update(Board board);
         void Delete(Board board);
-        
+        Task<Board?> GetByNameAsync(string boardName);
 
     }
 }

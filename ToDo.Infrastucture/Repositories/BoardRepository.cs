@@ -40,7 +40,11 @@ namespace ToDo.Infrastucture.Repositories
         {
             _context.Board.Remove(board);
         }
-       
+       public async Task<Board?> GetByNameAsync(string boardName)
+        {
+            return await _context.Board
+                .FirstOrDefaultAsync(b => b.Title == boardName);
+        }
 
 
     }
