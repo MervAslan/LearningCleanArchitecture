@@ -132,8 +132,11 @@
                             <p style="color: #94a3b8; margin-top: 0.5rem;">No boards yet. Create your first board!</p>
                         }
                     </div>
+                   
+
 
                     <div class="header-right">
+                        <button class="btn btn-primary" onclick="createTask(@selectedBoard.Id)"><i class="fas fa-plus"></i> New Task </button>
                         <button class="btn btn-primary" onclick="openBoardModal(@selectedCategory.Id)"><i class="fas fa-plus"></i> New Board </button>
                     </div>
 
@@ -152,12 +155,12 @@
                                 <div class="column-header">
                                     <div class="column-title">
                                         <h3>To Do</h3>
-                                        <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("To Do"))</span>
+                                        <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("ToDo"))</span>
                                     </div>
                                 </div>
 
                                 <div class="task-list">
-                                @foreach (var task in selectedBoard.Tasks.Where(t => t.Status.Equals("To Do")))
+                                @foreach (var task in selectedBoard.Tasks.Where(t => t.Status.Equals("ToDo")))
                                     {
                                         <div class="task-card">
                                             <div class="task-header">
@@ -185,7 +188,7 @@
                                     }
                                 </div>
 
-                                <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                               
                             </div>
 
                             <!-- In Progress Column -->
@@ -193,12 +196,12 @@
                                 <div class="column-header">
                                     <div class="column-title">
                                         <h3>In Progress</h3>
-                                    <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("In Progress"))</span>
+                                    <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("InProgress"))</span>
                                     </div>
                                 </div>
 
                                 <div class="task-list">
-                                @foreach (var task in selectedBoard.Tasks.Where(t => t.Status.Equals("In Progress")))
+                                @foreach (var task in selectedBoard.Tasks.Where(t => t.Status.Equals("InProgress")))
                                     {
                                         <div class="task-card">
                                             <div class="task-header">
@@ -226,7 +229,7 @@
                                     }
                                 </div>
 
-                                <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                               
                             </div>
 
                             <!-- Completed Column -->
@@ -267,7 +270,7 @@
                                     }
                                 </div>
 
-                                <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                               
                             </div>
                         </div>
                     
@@ -281,6 +284,7 @@
                         <p>Click "New Board" to create your first board</p>
                     </div>
                 }
+               
            
             }
         </main>
@@ -488,6 +492,37 @@
             </form>
         </div>
     </div>
+    <!-- Task Create Pop-up -->
+    <div id="taskCreateModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>New Task</h3>
+                <button class="modal-close" aria-label="Close" onclick="closeModal('taskCreateModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form asp-controller="Task" asp-action="CreateTask" method="post" class="modal-body">
+                <input type="hidden" id="BoardId" name="BoardId" value="" />
+                <div class="form-group">
+                    <label for="TaskTitle">Task Title</label>
+                    <input id="TaskTitle" name="Title" type="text" placeholder="Example: Board1, Board2, Board3..." required />
+                    <label for="TaskDescription">Task Description</label>
+                    <input id="TaskDescription" name="Description" type="text" placeholder="Example: Board1, Board2, Board3..." required />
+                    <label for="TaskTag">Task Tag</label>
+                    <input id="TaskTag" name="Tag" type="text" placeholder="Example: Board1, Board2, Board3..." required />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('taskCreateModal')">Cancel</button>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Create
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     
 
     <script>
@@ -512,6 +547,7 @@
             const boardCreateModal = document.getElementById('boardCreateModal');
             const boardDeleteModal = document.getElementById('boardDeleteModal');
             const boardEditModal = document.getElementById('boardEditModal');
+            const taskCreateModal=document.getElementById('taskCreateModal');
 
             
             window.openCategoryModal = function () {
@@ -553,6 +589,17 @@
                 boardCreateModal.classList.add('open');
                 boardCreateModal.setAttribute('aria-hidden', 'false');
                 setTimeout(() => document.getElementById('BoardName').focus(), 50);
+            };
+             window.createTask= function (boardId) {
+                document.getElementById('BoardId').value=boardId;
+                document.getElementById('TaskTitle').value = '';
+                document.getElementById('TaskDescription').value = '';
+                document.getElementById('TaskTag').value = '';
+                taskCreateModal.classList.add('open');
+                taskCreateModal.setAttribute('aria-hidden', 'false');
+                setTimeout(() => document.getElementById('TaskTitle').focus(), 50);
+                setTimeout(() => document.getElementById('TaskDescription').focus(), 50);
+                setTimeout(() => document.getElementById('TaskTag').focus(), 50);
             };
 
 

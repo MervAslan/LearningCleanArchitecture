@@ -30,9 +30,10 @@ namespace ToDo.Application.CQRS.Commands.TaskCommands
         {
             if(string.IsNullOrEmpty(request.Title)) return Result<TaskItemDto>.Failure("Task başlığı boş olamaz.");
             var board = await _boardRepository.GetByIdAsync(request.BoardId);
-            if(board == null || board.Category.UserId != _currentUserService.CurrentUserId) return Result<TaskItemDto>.Failure("Board bulunamadı veya erişim izniniz yok.");
+            
             var taskItem = _mapper.Map<Domain.Entities.TaskItem>(request);
             taskItem.Status = "ToDo";
+            taskItem.DueDate = DateTime.UtcNow;
             taskItem.BoardId = request.BoardId;
             await _taskItemRepository.AddAsync(taskItem);
             await _taskItemRepository.SaveChangesAsync();

@@ -4,6 +4,7 @@ using ToDo.Application.CQRS.Commands.CategoryCommands;
 using ToDo.Application.CQRS.Commands.BoardCommands;
 using ToDo.Application.DTOs;
 using ToDo.Domain.Entities;
+using ToDo.Application.CQRS.Commands.TaskCommands;
 
 namespace ToDo.Application.Mappings
 {
@@ -19,7 +20,8 @@ namespace ToDo.Application.Mappings
             CreateMap<Board, BoardDto>();
             CreateMap<TaskItem, TaskItemDto>();
             CreateMap<CreateCategoryCommand, Category>();
-            CreateMap<CreateBoardCommand, Board>(); 
+            CreateMap<CreateBoardCommand, Board>();
+            CreateMap<CreateTaskCommand, TaskItem>();
 
         }
     } 
