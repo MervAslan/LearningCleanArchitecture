@@ -4,7 +4,7 @@ namespace ToDo.Application.Interfaces
 {
     public interface ITaskItemRepository
     {
-        Task<List<TaskItem>> GetAllAsync();
+        Task<List<TaskItem>> GetAllAsync(int boardId);
         Task<TaskItem?> GetByIdAsync(int id);
         Task AddAsync(TaskItem item);
         Task SaveChangesAsync();

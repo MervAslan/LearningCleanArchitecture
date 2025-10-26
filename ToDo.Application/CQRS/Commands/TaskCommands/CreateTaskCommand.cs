@@ -1,12 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using ToDo.Application.Helpers;
+using ToDo.Application.DTOs;
+using ToDo.Application.Interfaces;
+using AutoMapper;
 
 namespace ToDo.Application.CQRS.Commands.TaskCommands
 {
-    internal class CreateTaskCommand
+    public class CreateTaskCommand : IRequest<Result<TaskItemDto>>
     {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string? Tag { get; set; }
+        public int BoardId { get; set; }
+    }
+    public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, Result<TaskItemDto>>
+    {
+        ITaskItemRepository _taskItemRepository;
+        IBoardRepository _boardRepository;
+        ICurrentUserService _currentUserService;
+        IMapper _mapper;
+        public CreateTaskCommandHandler(ITaskItemRepository taskItemRepository, IBoardRepository boardRepository, ICurrentUserService currentUserService, IMapper mapper)
+        {
+            _taskItemRepository = taskItemRepository;
+            _boardRepository = boardRepository;
+            _currentUserService = currentUserService;
+            _mapper = mapper;
+        }
+        public async Task<Result<TaskItemDto>> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
+        {
+            if(string.IsNullOrEmpty(request.Title)) return Result<TaskItemDto>.Failure("Task başlığı boş olamaz.");
+            var board = await _boardRepository.GetByIdAsync(request.BoardId);
+            if(board == null || board.Category.UserId != _currentUserService.CurrentUserId) return Result<TaskItemDto>.Failure("Board bulunamadı veya erişim izniniz yok.");
+            var taskItem = _mapper.Map<Domain.Entities.TaskItem>(request);
+            taskItem.Status = "ToDo";
+            taskItem.BoardId = request.BoardId;
+            await _taskItemRepository.AddAsync(taskItem);
+            await _taskItemRepository.SaveChangesAsync();
+            var taskItemDto = _mapper.Map<TaskItemDto>(taskItem);
+            return Result<TaskItemDto>.Success(taskItemDto, "Task başarıyla oluşturuldu.");
+
+        }
     }
 }
