@@ -172,7 +172,7 @@
                                                     <span>Edit</span>
                                                 </button>
                                                 <div class="dropdown-divider"></div>
-                                                <button class="dropdown-item delete" onclick="deleteTask(@task.Id, '@task.Title')">
+                                                <button class="dropdown-item delete" onclick="deleteTask(@task.Id, '@task.Title', '@task.Description', '@task.Tag')">
                                                     <i class="fa fa-trash"></i>
                                                     <span>Delete</span>
                                                 </button>
@@ -549,18 +549,18 @@
             <form asp-controller="Task" asp-action="DeleteTask" method="post" class="modal-body">
                 <input type="hidden" id="CategoryId" name="CategoryId" value="@selectedCategory.Id" />
                 <input type="hidden" id="BoardId" name="BoardId" value="@selectedBoard?.Id" />
-
+                <input type="hidden" id="TaskItemId" name="TaskItemId" value="" />
                 <div class="form-group">
-                    <label for="TaskTitle">Task Title</label>
-                    <input id="TaskTitle" name="Title" type="text" placeholder="Example: Task1, Task2, Task3..." readonly />
-                    <label for="TaskDescription">Task Description</label>
-                    <input id="TaskDescription" name="Description" type="text" placeholder="Example: Desc1, Desc2, Desc3..." readonly />
-                    <label for="TaskTag">Task Tag</label>
-                    <input id="TaskTag" name="Tag" type="text" placeholder="Example: Tag1, Tag2, Tag3..." readonly />
+                    <label for="TaskDeleteTitle">Task Title</label>
+                    <input id="TaskDeleteTitle" name="Title" type="text" readonly />
+                    <label for="TaskDeleteDescription">Task Description</label>
+                    <input id="TaskDeleteDescription" name="Description" type="text" readonly />
+                    <label for="TaskDeleteTag">Task Tag</label>
+                    <input id="TaskDeleteTag" name="Tag" type="text" readonly />
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('taskCreateModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('taskDeleteModal')">Cancel</button>
 
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-check"></i> Delete
@@ -594,6 +594,7 @@
             const boardDeleteModal = document.getElementById('boardDeleteModal');
             const boardEditModal = document.getElementById('boardEditModal');
             const taskCreateModal=document.getElementById('taskCreateModal');
+            const taskDeleteModal=document.getElementById('taskDeleteModal');
 
             
             window.openCategoryModal = function () {
@@ -653,6 +654,14 @@
                 setTimeout(() => document.getElementById('TaskTitle').focus(), 50);
                 setTimeout(() => document.getElementById('TaskDescription').focus(), 50);
                 setTimeout(() => document.getElementById('TaskTag').focus(), 50);
+            };
+            window.deleteTask= function (taskId, taskTitle,taskDescription,taskTag) {
+                    document.getElementById('TaskItemId').value=taskId;
+                    document.getElementById('TaskDeleteTitle').value = taskTitle;
+                    document.getElementById('TaskDeleteDescription').value = taskDescription;
+                    document.getElementById('TaskDeleteTag').value = taskTag;
+                    taskDeleteModal.classList.add('open');
+                    taskDeleteModal.setAttribute('aria-hidden', 'false');
             };
 
 
