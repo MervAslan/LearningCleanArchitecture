@@ -215,7 +215,18 @@
                                     <div class="task-card" data-task-id="@task.Id">
                                         <div class="task-header">
                                             <span class="task-priority priority-high"></span>
-                                            <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                                            <button class="task-menu" onclick="toggleDropdown(event,'task', @task.Id)"><i class="fas fa-ellipsis-h"></i></button>
+                                            <div class="category-dropdown" id="dropdown-task-@task.Id">
+                                                <button class="dropdown-item" onclick="editTask(@task.Id, '@task.Title', '@task.Description', '@task.Tag')">
+                                                    <i class="fa fa-pencil"></i>
+                                                    <span>Edit</span>
+                                                </button>
+                                                <div class="dropdown-divider"></div>
+                                                <button class="dropdown-item delete" onclick="deleteTask(@task.Id, '@task.Title', '@task.Description', '@task.Tag')">
+                                                    <i class="fa fa-trash"></i>
+                                                    <span>Delete</span>
+                                                </button>
+                                            </div>
                                         </div>
                                         <h4 class="task-title">@task.Title</h4>
                                         <p class="task-description">@task.Description</p>
@@ -254,7 +265,18 @@
                                     <div class="task-card" data-task-id="@task.Id">
                                         <div class="task-header">
                                             <span class="task-priority priority-low"></span>
-                                            <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                                            <button class="task-menu" onclick="toggleDropdown(event,'task', @task.Id)"><i class="fas fa-ellipsis-h"></i></button>
+                                            <div class="category-dropdown" id="dropdown-task-@task.Id">
+                                                <button class="dropdown-item" onclick="editTask(@task.Id, '@task.Title', '@task.Description', '@task.Tag')">
+                                                    <i class="fa fa-pencil"></i>
+                                                    <span>Edit</span>
+                                                </button>
+                                                <div class="dropdown-divider"></div>
+                                                <button class="dropdown-item delete" onclick="deleteTask(@task.Id, '@task.Title', '@task.Description', '@task.Tag')">
+                                                    <i class="fa fa-trash"></i>
+                                                    <span>Delete</span>
+                                                </button>
+                                            </div>
                                         </div>
                                         <h4 class="task-title">@task.Title</h4>
                                         <p class="task-description">@task.Description</p>
@@ -811,6 +833,7 @@
                     const taskId = e.dataTransfer.getData('TaskItemId');
                     const newStatus = this.closest('.kanban-column').dataset.status;
 
+                     updateColumnBadges();
                     // Backend'e status güncellemesi gönder
                     updateTaskStatus(taskId, newStatus);
                 });
@@ -845,7 +868,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.isSuccess) {
+                if (data.success) {
                     // Badge sayılarını güncelle
                     updateColumnBadges();
                     toastr.success(data.message);
@@ -862,13 +885,15 @@
             });
         }
 
-               function updateColumnBadges() {
-            document.querySelectorAll('.kanban-column').forEach(column => {
+            function updateColumnBadges() {
+                document.querySelectorAll('.kanban-column').forEach(column => {
+                const status = column.dataset.status; // ToDo, InProgress, Completed
                 const badge = column.querySelector('.column-badge');
                 const taskCount = column.querySelectorAll('.task-list .task-card').length;
                 badge.textContent = taskCount;
             });
         }
+
 
                  
                    
