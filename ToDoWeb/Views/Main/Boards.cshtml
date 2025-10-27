@@ -167,7 +167,7 @@
                                                 <span class="task-priority priority-high"></span>
                                             <button class="task-menu" onclick="toggleDropdown(event,'task', @task.Id)"><i class="fas fa-ellipsis-h"></i></button>
                                             <div class="category-dropdown" id="dropdown-task-@task.Id">
-                                                <button class="dropdown-item" onclick="editTask(@task.Id, '@task.Title')">
+                                                <button class="dropdown-item" onclick="editTask(@task.Id, '@task.Title', '@task.Description', '@task.Tag')">
                                                     <i class="fa fa-pencil"></i>
                                                     <span>Edit</span>
                                                 </button>
@@ -547,9 +547,9 @@
             </div>
 
             <form asp-controller="Task" asp-action="DeleteTask" method="post" class="modal-body">
-                <input type="hidden" id="CategoryId" name="CategoryId" value="@selectedCategory.Id" />
-                <input type="hidden" id="BoardId" name="BoardId" value="@selectedBoard?.Id" />
-                <input type="hidden" id="TaskItemId" name="TaskItemId" value="" />
+                <input type="hidden" id="TaskDeleteCategoryId" name="CategoryId" value="@selectedCategory.Id" />
+                <input type="hidden" id="TaskDeleteBoardId" name="BoardId" value="@selectedBoard?.Id" />
+                <input type="hidden" id="TaskDeleteTaskItemId" name="TaskItemId" value="" />
                 <div class="form-group">
                     <label for="TaskDeleteTitle">Task Title</label>
                     <input id="TaskDeleteTitle" name="Title" type="text" readonly />
@@ -564,6 +564,39 @@
 
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-check"></i> Delete
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Task Edit Pop-up -->
+    <div id="taskEditModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Edit Task</h3>
+                <button class="modal-close" aria-label="Close" onclick="closeModal('taskEditModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form asp-controller="Task" asp-action="UpdateTask" method="post" class="modal-body">
+                <input type="hidden" id="TaskEditCategoryId" name="CategoryId" value="@selectedCategory.Id" />
+                <input type="hidden" id="TaskEditBoardId" name="BoardId" value="@selectedBoard?.Id" />
+                <input type="hidden" id="TaskEditTaskItemId" name="TaskItemId" value="" />
+                <div class="form-group">
+                    <label for="TaskEditTitle">Task Title</label>
+                    <input id="TaskEditTitle" name="Title" type="text"  />
+                    <label for="TaskEditDescription">Task Description</label>
+                    <input id="TaskEditDescription" name="Description" type="text"  />
+                    <label for="TaskEditTag">Task Tag</label>
+                    <input id="TaskEditTag" name="Tag" type="text"  />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('taskEditModal')">Cancel</button>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Edit
                     </button>
                 </div>
             </form>
@@ -595,6 +628,7 @@
             const boardEditModal = document.getElementById('boardEditModal');
             const taskCreateModal=document.getElementById('taskCreateModal');
             const taskDeleteModal=document.getElementById('taskDeleteModal');
+            const taskEditModal=document.getElementById('taskEditModal');
 
             
             window.openCategoryModal = function () {
@@ -656,12 +690,24 @@
                 setTimeout(() => document.getElementById('TaskTag').focus(), 50);
             };
             window.deleteTask= function (taskId, taskTitle,taskDescription,taskTag) {
-                    document.getElementById('TaskItemId').value=taskId;
+                     
+                    document.getElementById('TaskDeleteTaskItemId').value=taskId;
                     document.getElementById('TaskDeleteTitle').value = taskTitle;
                     document.getElementById('TaskDeleteDescription').value = taskDescription;
                     document.getElementById('TaskDeleteTag').value = taskTag;
                     taskDeleteModal.classList.add('open');
                     taskDeleteModal.setAttribute('aria-hidden', 'false');
+            };
+            window.editTask= function (taskId, taskTitle,taskDescription,taskTag) {
+                    document.getElementById('TaskEditTaskItemId').value=taskId;
+                    document.getElementById('TaskEditTitle').value = taskTitle;
+                    document.getElementById('TaskEditDescription').value = taskDescription;
+                    document.getElementById('TaskEditTag').value = taskTag;
+                    taskEditModal.classList.add('open');
+                    taskEditModal.setAttribute('aria-hidden', 'false');
+                    setTimeout(() => document.getElementById('TaskEditTitle').focus(), 50);
+                    setTimeout(() => document.getElementById('TaskEditDescription').focus(), 50);
+                    setTimeout(() => document.getElementById('TaskEditTag').focus(), 50)
             };
 
 
