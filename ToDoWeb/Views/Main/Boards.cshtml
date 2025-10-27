@@ -150,21 +150,21 @@
 
                         <!-- Kanban Board -->
                         <div class="kanban-board">
-                            <!-- To Do Column -->
-                            <div class="kanban-column">
-                                <div class="column-header">
-                                    <div class="column-title">
-                                        <h3>To Do</h3>
-                                        <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("ToDo"))</span>
-                                    </div>
+                        <!-- To Do Column -->
+                        <div class="kanban-column" data-status="ToDo">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <h3>To Do</h3>
+                                    <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("ToDo"))</span>
                                 </div>
+                            </div>
 
-                                <div class="task-list">
+                            <div class="task-list">
                                 @foreach (var task in selectedBoard.Tasks.Where(t => t.Status.Equals("ToDo")))
-                                    {
-                                        <div class="task-card">
-                                            <div class="task-header">
-                                                <span class="task-priority priority-high"></span>
+                                {
+                                    <div class="task-card" data-task-id="@task.Id">
+                                        <div class="task-header">
+                                            <span class="task-priority priority-high"></span>
                                             <button class="task-menu" onclick="toggleDropdown(event,'task', @task.Id)"><i class="fas fa-ellipsis-h"></i></button>
                                             <div class="category-dropdown" id="dropdown-task-@task.Id">
                                                 <button class="dropdown-item" onclick="editTask(@task.Id, '@task.Title', '@task.Description', '@task.Tag')">
@@ -177,112 +177,106 @@
                                                     <span>Delete</span>
                                                 </button>
                                             </div>
+                                        </div>
+                                        <h4 class="task-title">@task.Title</h4>
+                                        <p class="task-description">@task.Description</p>
+                                        <div class="task-footer">
+                                            <div class="task-tags">
+                                                @if (!string.IsNullOrEmpty(task.Tag))
+                                                {
+                                                    <span class="task-tag">@task.Tag</span>
+                                                }
                                             </div>
-                                            <h4 class="task-title">@task.Title</h4>
-                                            <p class="task-description">@task.Description</p>
-                                            <div class="task-footer">
-                                                <div class="task-tags">
-                                                    @if (!string.IsNullOrEmpty(task.Tag))
-                                                    {
-                                                        <span class="task-tag">@task.Tag</span>
-                                                    }
-                                                </div>
-                                                <div class="task-meta">
-                                                    @if (task.DueDate.HasValue)
-                                                    {
-                                                        <span><i class="far fa-calendar"></i> @task.DueDate.Value.ToString("MMM dd")</span>
-                                                    }
-                                                    <div class="task-assignee">@Model.Username.Substring(0, 2).ToUpper()</div>
-                                                </div>
+                                            <div class="task-meta">
+                                                @if (task.DueDate.HasValue)
+                                                {
+                                                    <span><i class="far fa-calendar"></i> @task.DueDate.Value.ToString("MMM dd")</span>
+                                                }
+                                                <div class="task-assignee">@Model.Username.Substring(0, 2).ToUpper()</div>
                                             </div>
                                         </div>
-                                    }
-                                </div>
-
-                               
+                                    </div>
+                                }
                             </div>
+                        </div>
 
-                            <!-- In Progress Column -->
-                            <div class="kanban-column">
-                                <div class="column-header">
-                                    <div class="column-title">
-                                        <h3>In Progress</h3>
+                        <!-- In Progress Column -->
+                        <div class="kanban-column" data-status="InProgress">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <h3>In Progress</h3>
                                     <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("InProgress"))</span>
-                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="task-list">
+                            <div class="task-list">
                                 @foreach (var task in selectedBoard.Tasks.Where(t => t.Status.Equals("InProgress")))
-                                    {
-                                        <div class="task-card">
-                                            <div class="task-header">
-                                                <span class="task-priority priority-high"></span>
-                                                <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                                {
+                                    <div class="task-card" data-task-id="@task.Id">
+                                        <div class="task-header">
+                                            <span class="task-priority priority-high"></span>
+                                            <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                                        </div>
+                                        <h4 class="task-title">@task.Title</h4>
+                                        <p class="task-description">@task.Description</p>
+                                        <div class="task-footer">
+                                            <div class="task-tags">
+                                                @if (!string.IsNullOrEmpty(task.Tag))
+                                                {
+                                                    <span class="task-tag">@task.Tag</span>
+                                                }
                                             </div>
-                                            <h4 class="task-title">@task.Title</h4>
-                                            <p class="task-description">@task.Description</p>
-                                            <div class="task-footer">
-                                                <div class="task-tags">
-                                                    @if (!string.IsNullOrEmpty(task.Tag))
-                                                    {
-                                                        <span class="task-tag">@task.Tag</span>
-                                                    }
-                                                </div>
-                                                <div class="task-meta">
-                                                    @if (task.DueDate.HasValue)
-                                                    {
-                                                        <span><i class="far fa-calendar"></i> @task.DueDate.Value.ToString("MMM dd")</span>
-                                                    }
-                                                    <div class="task-assignee">@Model.Username.Substring(0, 2).ToUpper()</div>
-                                                </div>
+                                            <div class="task-meta">
+                                                @if (task.DueDate.HasValue)
+                                                {
+                                                    <span><i class="far fa-calendar"></i> @task.DueDate.Value.ToString("MMM dd")</span>
+                                                }
+                                                <div class="task-assignee">@Model.Username.Substring(0, 2).ToUpper()</div>
                                             </div>
                                         </div>
-                                    }
-                                </div>
-
-                               
-                            </div>
-
-                            <!-- Completed Column -->
-                            <div class="kanban-column">
-                                <div class="column-header">
-                                    <div class="column-title">
-                                        <h3>Completed</h3>
-                                    <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("Completed"))</span>
                                     </div>
-                                </div>
+                                }
+                            </div>
+                        </div>
 
-                                <div class="task-list">
+                        <!-- Completed Column -->
+                        <div class="kanban-column" data-status="Completed">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <h3>Completed</h3>
+                                    <span class="column-badge">@selectedBoard.Tasks.Count(t => t.Status.Equals("Completed"))</span>
+                                </div>
+                            </div>
+
+                            <div class="task-list">
                                 @foreach (var task in selectedBoard.Tasks.Where(t => t.Status.Equals("Completed")))
-                                    {
-                                        <div class="task-card">
-                                            <div class="task-header">
-                                                <span class="task-priority priority-low"></span>
-                                                <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                                {
+                                    <div class="task-card" data-task-id="@task.Id">
+                                        <div class="task-header">
+                                            <span class="task-priority priority-low"></span>
+                                            <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                                        </div>
+                                        <h4 class="task-title">@task.Title</h4>
+                                        <p class="task-description">@task.Description</p>
+                                        <div class="task-footer">
+                                            <div class="task-tags">
+                                                @if (!string.IsNullOrEmpty(task.Tag))
+                                                {
+                                                    <span class="task-tag">@task.Tag</span>
+                                                }
                                             </div>
-                                            <h4 class="task-title">@task.Title</h4>
-                                            <p class="task-description">@task.Description</p>
-                                            <div class="task-footer">
-                                                <div class="task-tags">
-                                                    @if (!string.IsNullOrEmpty(task.Tag))
-                                                    {
-                                                        <span class="task-tag">@task.Tag</span>
-                                                    }
-                                                </div>
-                                                <div class="task-meta">
-                                                    @if (task.DueDate.HasValue)
-                                                    {
-                                                        <span><i class="far fa-calendar"></i> @task.DueDate.Value.ToString("MMM dd")</span>
-                                                    }
-                                                    <div class="task-assignee">@Model.Username.Substring(0, 2).ToUpper()</div>
-                                                </div>
+                                            <div class="task-meta">
+                                                @if (task.DueDate.HasValue)
+                                                {
+                                                    <span><i class="far fa-calendar"></i> @task.DueDate.Value.ToString("MMM dd")</span>
+                                                }
+                                                <div class="task-assignee">@Model.Username.Substring(0, 2).ToUpper()</div>
                                             </div>
                                         </div>
-                                    }
-                                </div>
-
-                               
+                                    </div>
+                                }
                             </div>
+                        </div>
                         </div>
                     
                 }
@@ -767,6 +761,115 @@
                 }
             });
         });
+
+                // Drag & Drop İşlevselliği
+        document.addEventListener("DOMContentLoaded", function () {
+            // ... (Mevcut kodlar aynı kalacak)
+
+            // Drag & Drop'u başlat
+            initializeDragAndDrop();
+        });
+
+        function initializeDragAndDrop() {
+            const taskCards = document.querySelectorAll('.task-card');
+            const columns = document.querySelectorAll('.task-list');
+
+            // Task kartlarını sürüklenebilir yap
+            taskCards.forEach(card => {
+                card.setAttribute('draggable', 'true');
+
+                card.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/html', this.innerHTML);
+                    e.dataTransfer.setData('TaskItemId', this.dataset.taskId);
+                    this.classList.add('dragging');
+                });
+
+                card.addEventListener('dragend', function(e) {
+                    this.classList.remove('dragging');
+                });
+            });
+
+            // Column'ları drop zone yap
+            columns.forEach(column => {
+                column.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+
+                    const afterElement = getDragAfterElement(column, e.clientY);
+                    const dragging = document.querySelector('.dragging');
+
+                    if (afterElement == null) {
+                        column.appendChild(dragging);
+                    } else {
+                        column.insertBefore(dragging, afterElement);
+                    }
+                });
+
+                column.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    const taskId = e.dataTransfer.getData('TaskItemId');
+                    const newStatus = this.closest('.kanban-column').dataset.status;
+
+                    // Backend'e status güncellemesi gönder
+                    updateTaskStatus(taskId, newStatus);
+                });
+            });
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.task-card:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function updateTaskStatus(taskId, newStatus) {
+            fetch('/Task/UpdateTaskStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    TaskItemId: parseInt(taskId),
+                    newStatus: newStatus
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.isSuccess) {
+                    // Badge sayılarını güncelle
+                    updateColumnBadges();
+                    toastr.success(data.message);
+                } else {
+                    toastr.error(data.message);
+                    // Hata durumunda sayfayı yenile
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                toastr.error('An error occurred while updating task status');
+                location.reload();
+            });
+        }
+
+               function updateColumnBadges() {
+            document.querySelectorAll('.kanban-column').forEach(column => {
+                const badge = column.querySelector('.column-badge');
+                const taskCount = column.querySelectorAll('.task-list .task-card').length;
+                badge.textContent = taskCount;
+            });
+        }
+
                  
                    
 

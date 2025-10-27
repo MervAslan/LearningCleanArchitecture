@@ -51,5 +51,14 @@ namespace ToDoWeb.Controllers
             }
             return RedirectToAction("Boards", "Main", new { categoryId = command.CategoryId, boardId = command.BoardId });
         }
+        [HttpPost]
+        public async Task<IActionResult> UpdateTaskStatus([FromBody] UpdateTaskStatusCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result.IsSuccess)
+                return Ok(new { isSuccess = true, message = result.Message });
+            return BadRequest(new { isSuccess = false, message = result.Message });
+        }
+
     }
 }
