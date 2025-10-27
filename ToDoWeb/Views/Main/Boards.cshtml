@@ -124,7 +124,7 @@
                     <div class="header-left">
                         @if (selectedCategory.Boards.Any())
                         {
-                            <h1> @selectedCategory.Name Category - @selectedBoard.Title Board</h1>
+                            <h1> @selectedCategory.Name Category - @selectedBoard?.Title Board</h1>
                         }
                         else
                         {
@@ -136,7 +136,7 @@
 
 
                     <div class="header-right">
-                        <button class="btn btn-primary" onclick="createTask(@selectedBoard.Id)"><i class="fas fa-plus"></i> New Task </button>
+                        <button class="btn btn-primary" onclick="createTask(@selectedBoard?.Id)"><i class="fas fa-plus"></i> New Task </button>
                         <button class="btn btn-primary" onclick="openBoardModal(@selectedCategory.Id)"><i class="fas fa-plus"></i> New Board </button>
                     </div>
 
@@ -165,7 +165,18 @@
                                         <div class="task-card">
                                             <div class="task-header">
                                                 <span class="task-priority priority-high"></span>
-                                                <button class="task-menu"><i class="fas fa-ellipsis-h"></i></button>
+                                            <button class="task-menu" onclick="toggleDropdown(event,'task', @task.Id)"><i class="fas fa-ellipsis-h"></i></button>
+                                            <div class="category-dropdown" id="dropdown-task-@task.Id">
+                                                <button class="dropdown-item" onclick="editTask(@task.Id, '@task.Title')">
+                                                    <i class="fa fa-pencil"></i>
+                                                    <span>Edit</span>
+                                                </button>
+                                                <div class="dropdown-divider"></div>
+                                                <button class="dropdown-item delete" onclick="deleteTask(@task.Id, '@task.Title')">
+                                                    <i class="fa fa-trash"></i>
+                                                    <span>Delete</span>
+                                                </button>
+                                            </div>
                                             </div>
                                             <h4 class="task-title">@task.Title</h4>
                                             <p class="task-description">@task.Description</p>
@@ -503,14 +514,16 @@
             </div>
 
             <form asp-controller="Task" asp-action="CreateTask" method="post" class="modal-body">
-                <input type="hidden" id="BoardId" name="BoardId" value="" />
+                <input type="hidden" id="CategoryId" name="CategoryId" value="@selectedCategory.Id" />
+                <input type="hidden" id="BoardId" name="BoardId" value="@selectedBoard?.Id" />
+
                 <div class="form-group">
                     <label for="TaskTitle">Task Title</label>
-                    <input id="TaskTitle" name="Title" type="text" placeholder="Example: Board1, Board2, Board3..." required />
+                    <input id="TaskTitle" name="Title" type="text" placeholder="Example: Task1, Task2, Task3..." required />
                     <label for="TaskDescription">Task Description</label>
-                    <input id="TaskDescription" name="Description" type="text" placeholder="Example: Board1, Board2, Board3..." required />
+                    <input id="TaskDescription" name="Description" type="text" placeholder="Example: Desc1, Desc2, Desc3..." required />
                     <label for="TaskTag">Task Tag</label>
-                    <input id="TaskTag" name="Tag" type="text" placeholder="Example: Board1, Board2, Board3..." required />
+                    <input id="TaskTag" name="Tag" type="text" placeholder="Example: Tag1, Tag2, Tag3..." required />
                 </div>
 
                 <div class="modal-footer">
@@ -518,6 +531,39 @@
 
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-check"></i> Create
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Task Delete Pop-up -->
+    <div id="taskDeleteModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Delete Task</h3>
+                <button class="modal-close" aria-label="Close" onclick="closeModal('taskDeleteModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form asp-controller="Task" asp-action="DeleteTask" method="post" class="modal-body">
+                <input type="hidden" id="CategoryId" name="CategoryId" value="@selectedCategory.Id" />
+                <input type="hidden" id="BoardId" name="BoardId" value="@selectedBoard?.Id" />
+
+                <div class="form-group">
+                    <label for="TaskTitle">Task Title</label>
+                    <input id="TaskTitle" name="Title" type="text" placeholder="Example: Task1, Task2, Task3..." readonly />
+                    <label for="TaskDescription">Task Description</label>
+                    <input id="TaskDescription" name="Description" type="text" placeholder="Example: Desc1, Desc2, Desc3..." readonly />
+                    <label for="TaskTag">Task Tag</label>
+                    <input id="TaskTag" name="Tag" type="text" placeholder="Example: Tag1, Tag2, Tag3..." readonly />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('taskCreateModal')">Cancel</button>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Delete
                     </button>
                 </div>
             </form>
@@ -564,6 +610,13 @@
                 editModal.classList.add('open');
                 editModal.setAttribute('aria-hidden', 'false');
                 setTimeout(() => document.getElementById('EditCategoryName').focus(), 50);
+            };
+            window.deleteCategory = function (categoryId, currentName) {
+                document.getElementById('DeleteCategoryId').value = categoryId;
+                document.getElementById('DeleteCategoryName').value = currentName;
+                deleteModal.classList.add('open');
+                deleteModal.setAttribute('aria-hidden', 'false');
+               
             };
 
             

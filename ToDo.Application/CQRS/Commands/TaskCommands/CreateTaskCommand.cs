@@ -12,6 +12,7 @@ namespace ToDo.Application.CQRS.Commands.TaskCommands
         public string Description { get; set; }
         public string? Tag { get; set; }
         public int BoardId { get; set; }
+        public int CategoryId { get; set; }
     }
     public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, Result<TaskItemDto>>
     {
@@ -28,17 +29,25 @@ namespace ToDo.Application.CQRS.Commands.TaskCommands
         }
         public async Task<Result<TaskItemDto>> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
         {
-            if(string.IsNullOrEmpty(request.Title)) return Result<TaskItemDto>.Failure("Task başlığı boş olamaz.");
+            if (string.IsNullOrEmpty(request.Title)) return Result<TaskItemDto>.Failure("Task başlığı boş olamaz.");
             var board = await _boardRepository.GetByIdAsync(request.BoardId);
-            
+
+            if (board == null)
+            {
+                return Result<TaskItemDto>.Failure("Lütfen Board Oluşturun.");
+            }
+
             var taskItem = _mapper.Map<Domain.Entities.TaskItem>(request);
             taskItem.Status = "ToDo";
             taskItem.DueDate = DateTime.UtcNow;
             taskItem.BoardId = request.BoardId;
+
             await _taskItemRepository.AddAsync(taskItem);
             await _taskItemRepository.SaveChangesAsync();
+
             var taskItemDto = _mapper.Map<TaskItemDto>(taskItem);
             return Result<TaskItemDto>.Success(taskItemDto, "Task başarıyla oluşturuldu.");
+
 
         }
     }
